@@ -40,7 +40,7 @@ require __DIR__.'/auth.php';
 // 主頁面
 Route::get('/front-index', [FontController::class, 'index'])->name('front-index');
 // 新增商品頁面
-Route::prefix('/cart')->group(function () {
+Route::middleware('auth')->prefix('/cart')->group(function () {
 
     Route::get('/product-list', [CartController::class, 'index'])->name('cartProductList');
     Route::get('/add', [CartController::class, 'create'])->name('cartAdd');
@@ -63,7 +63,7 @@ Route::prefix('/type')->group(function () {
     Route::delete('/destroy/{id}', [TypeController::class, 'destroy'])->name('typeDestroy');
 });
 // 傳送訊息
-Route::prefix('/message')->group(function () {
+Route::middleware('auth')->prefix('/message')->group(function () {
     Route::get('/', [MessageController::class, 'index'])->name('messageIndex');
 
     Route::post('/replayStore', [MessageController::class, 'replayStore'])->name('replayStore');
@@ -80,7 +80,7 @@ Route::prefix('/message')->group(function () {
     Route::delete('/reply/destroy/{id}', [MessageController::class, 'replayDestroy'])->name('replyDestroy');
 });
 // 回覆訊息
-Route::prefix('/reply')->group(function () {
+Route::middleware('auth')->prefix('/reply')->group(function () {
     Route::get('/index', [ReplyController::class, 'index'])->name('replyIndex');
 
     Route::get('/add', [ReplyController::class, 'create'])->name('replyAdd');
