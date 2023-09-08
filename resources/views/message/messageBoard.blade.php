@@ -70,7 +70,7 @@
                                     <button type="button" class="btn  btn-success  btn-success-self" onclick="deleteReply({{ $reply->id }})">刪除吧</button>
                                 </div>
                             @endforeach
-                            <form action="{{ route('replayStore', ['id' => $item->id]) }}" method="post">
+                            <form action="{{ route('replayStore')}}" method="post">
                                 @csrf
                                 <input type="hidden" name="message_id" value="{{ $item->id }}">
                                 <div class="form-floating mb-3">

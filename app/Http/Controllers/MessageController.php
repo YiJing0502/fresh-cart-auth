@@ -23,8 +23,8 @@ class MessageController extends Controller
         // $replys = ReplyToMessage::all();
         // $replys = ReplyToMessage::all();
         //找尋第一筆資料，寫all會是一整包陣列，就找不到
-        // $types = ProductType::first();
-        // dd($messages->replyToMessage);
+        // $messages = ReplyToMessage::first();
+        // dd($messages->message);
         // $typesImg = ProductTypeImg::all();
         return view('message.messageBoard', compact('messages'));
     }
@@ -32,12 +32,13 @@ class MessageController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function replayStore(Request $request, $id)
+    public function replayStore(Request $request)
     {
         //
         // dd($id);
         // dd(ReplyToMessage::all());
-        $messageId = $request->input('message_id');
+        $messageId = $request->message_id;
+        // dd($messageId);
         ReplyToMessage::create([
             'replay_message' => $request->reply,
             'message_id' => $messageId,

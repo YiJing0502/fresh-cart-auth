@@ -12,6 +12,6 @@ class FontController extends Controller
         // status
         $products = Product::where('status', 1)->get();
         // dd($products);
-        return view('welcome', compact('products'));
+        return view('fontFreshCart.fontFreshCart', compact('products'));
     }
 }
