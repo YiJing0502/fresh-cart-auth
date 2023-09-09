@@ -17,8 +17,7 @@
   <link rel="stylesheet" href="{{asset('css/down.css')}}">
   <!-- Local Swiper CSS -->
   <link rel="stylesheet" href="./css/swiper.css">
-
-
+  @yield('style')
 </head>
 
 
@@ -69,7 +68,7 @@
             <i class="bi bi-heart top-icon"></i>
             <span class="position-absolute badge badge-circle text-bg-success rounded-circle">5</span>
           </a>
-          <a href="/">
+          <a href="{{route('user.info')}}">
             <i class="bi bi-person top-icon"></i>
           </a>
           <a href="#" class="position-relative">

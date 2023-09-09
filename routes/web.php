@@ -39,6 +39,9 @@ require __DIR__.'/auth.php';
 
 // 主頁面
 Route::get('/front-index', [FontController::class, 'index'])->name('front-index');
+// 前台使用者帳號資訊頁面
+Route::middleware('auth')->get('/user/info', [FontController::class, 'user_info'])->name('user.info');
+Route::middleware('auth')->post('/user/info/update', [FontController::class, 'user_info_update'])->name('user.info.update');
 // 新增商品頁面
 Route::middleware('auth')->prefix('/cart')->group(function () {
 
@@ -62,6 +65,7 @@ Route::prefix('/type')->group(function () {
     // 刪除
     Route::delete('/destroy/{id}', [TypeController::class, 'destroy'])->name('typeDestroy');
 });
+
 // 傳送訊息
 Route::middleware('auth')->prefix('/message')->group(function () {
     Route::get('/', [MessageController::class, 'index'])->name('messageIndex');
