@@ -7,12 +7,10 @@
 @section('main-content')
 
 
-    <div class="container">
+<div class="container">
 
 
-        <button class="btn btn-success"></button>
-    </div>
-
+</div>
 
 @endsection
 @section('js')

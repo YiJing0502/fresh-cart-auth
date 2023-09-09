@@ -103,7 +103,4 @@ Route::prefix('/order')->group(function () {
     Route::get('/pay', [OrderController::class, 'pay_index'])->name('order.pay');
     Route::get('/thanks', [OrderController::class, 'thanks_index'])->name('order.thanks');
 
-
-
-
 });
