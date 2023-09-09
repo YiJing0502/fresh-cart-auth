@@ -53,6 +53,9 @@
     <div class="top-search">
       <div class="container d-flex justify-content-between">
         <div class="top-search-left d-flex align-items-center">
+        @auth
+        <h6>hi, {{Auth::user()->name}}</h6>
+        @endauth
           <a href="#" class="freshcart-logo"><img src="./img/icon/freshcart-logo.svg" alt=""></a>
           <form class="d-flex position-relative d-none d-lg-flex" role="search">
             <input class="form-control me-2" type="search" placeholder="Search for products" aria-label="Search">
