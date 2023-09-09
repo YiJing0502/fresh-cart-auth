@@ -12,6 +12,7 @@ class OrderController extends Controller
     }
     public function tran_index()
     {
+        return view('front_end.cart_order.order_tran');
     }
     public function pay_index()
     {
