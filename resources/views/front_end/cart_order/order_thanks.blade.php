@@ -55,8 +55,8 @@
 
 
     <section class="order-footer d-flex justify-content-between mt-5">
-    <button class="btn btn-success">上一步</button>
-    <button class="btn btn-success">下一步</button>
+        <a href="{{route('')}}"><button class="btn btn-success">上一步</button></a>
+        <a href="{{route('')}}"><button class="btn btn-success">下一步</button></a>
     </section>
 
 </div>
