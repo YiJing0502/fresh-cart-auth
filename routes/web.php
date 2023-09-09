@@ -8,6 +8,7 @@ use App\Http\Controllers\TypeController;
 use App\Http\Controllers\FontController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -92,4 +93,17 @@ Route::middleware('auth')->prefix('/reply')->group(function () {
 
     Route::get('/edit/{id}', [ReplyController::class, 'edit'])->name('replyEdit');
     Route::put('/update/{id}', [ReplyController::class, 'update'])->name('replyUpdate');
+});
+
+
+//
+Route::prefix('/order')->group(function () {
+    Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
+    Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
+    Route::get('/pay', [OrderController::class, 'pay_index'])->name('order.pay');
+    Route::get('/thanks', [OrderController::class, 'thanks_index'])->name('order.thanks');
+
+
+
+
 });
