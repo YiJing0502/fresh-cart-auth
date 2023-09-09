@@ -16,9 +16,11 @@ class OrderController extends Controller
     }
     public function pay_index()
     {
+        return view('front_end.cart_order.order_pay');
     }
     public function thanks_index()
     {
+        return view('front_end.cart_order.order_thanks');
     }
 
 
