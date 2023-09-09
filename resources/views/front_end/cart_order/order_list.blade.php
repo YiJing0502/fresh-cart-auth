@@ -8,6 +8,9 @@
 
 
     <div class="container">
+        <section class="order-header"></section>
+        <section class="order-body"></section>
+        <section class="order-footer"></section>
 
 
 
