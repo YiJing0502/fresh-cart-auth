@@ -84,7 +84,7 @@
             }
         }
     </script>
-    @if ($errors->first('name'))
+    @if ($errors->first())
         <script>
             Swal.fire({
                 icon: 'error',
@@ -92,6 +92,5 @@
                 text: '{{ $erros->first() }}',
             })
         </script>
-
     @endif
 @endsection

@@ -66,7 +66,7 @@ Route::prefix('/type')->group(function () {
     Route::delete('/destroy/{id}', [TypeController::class, 'destroy'])->name('typeDestroy');
 });
 
-// 傳送訊息
+// 前台＿傳送訊息
 Route::middleware('auth')->prefix('/message')->group(function () {
     Route::get('/', [MessageController::class, 'index'])->name('messageIndex');
 
@@ -83,7 +83,7 @@ Route::middleware('auth')->prefix('/message')->group(function () {
 
     Route::delete('/reply/destroy/{id}', [MessageController::class, 'replayDestroy'])->name('replyDestroy');
 });
-// 回覆訊息
+// 前台＿回覆訊息
 Route::middleware('auth')->prefix('/reply')->group(function () {
     Route::get('/index', [ReplyController::class, 'index'])->name('replyIndex');
 
@@ -95,7 +95,7 @@ Route::middleware('auth')->prefix('/reply')->group(function () {
 });
 
 
-//前台客戶訂單區塊
+//前台＿客戶訂單區塊
 Route::prefix('/order')->group(function () {
     Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
     Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
