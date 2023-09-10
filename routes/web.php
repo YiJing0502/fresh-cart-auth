@@ -40,21 +40,20 @@ require __DIR__.'/auth.php';
 
 // 主頁面
 Route::get('/front-index', [FontController::class, 'index'])->name('front-index');
-// 前台使用者帳號資訊頁面
+// 前台使用者帳號資訊頁面區塊
 Route::middleware('auth')->get('/user/info', [FontController::class, 'user_info'])->name('user.info');
 Route::middleware('auth')->post('/user/info/update', [FontController::class, 'user_info_update'])->name('user.info.update');
 // 新增商品頁面
 Route::middleware('auth')->prefix('/cart')->group(function () {
-
     Route::get('/product-list', [CartController::class, 'index'])->name('cartProductList');
     Route::get('/add', [CartController::class, 'create'])->name('cartAdd');
     Route::post('/store', [CartController::class, 'store'])->name('cartStore');
     Route::get('/edit/{id}', [CartController::class, 'edit'])->name('cartEdit');
     Route::post('/update/{id}', [CartController::class, 'update'])->name('cartUpdate');
-    // 刪除
     Route::post('/destroy/{id}', [CartController::class, 'destroy'])->name('cartDestroy');
 });
-// Route::get('test', [CartController::class, 'index']);
+
+// 產品類別區塊
 Route::prefix('/type')->group(function () {
     Route::get('/product-list', [TypeController::class, 'index'])->name('typeProductList');
 
@@ -96,7 +95,7 @@ Route::middleware('auth')->prefix('/reply')->group(function () {
 });
 
 
-//
+//前台客戶訂單區塊
 Route::prefix('/order')->group(function () {
     Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
     Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');

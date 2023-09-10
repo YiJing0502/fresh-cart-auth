@@ -53,10 +53,7 @@
     <div class="top-search">
       <div class="container d-flex justify-content-between">
         <div class="top-search-left d-flex align-items-center">
-        @auth
-        <h6>hi, {{Auth::user()->name}}</h6>
-        @endauth
-          <a href="#" class="freshcart-logo"><img src="./img/icon/freshcart-logo.svg" alt=""></a>
+            <a href="{{route('front-index')}}" class="freshcart-logo"><img src="{{asset('img/icon/freshcart-logo.svg')}}" alt=""></a>
           <form class="d-flex position-relative d-none d-lg-flex" role="search">
             <input class="form-control me-2" type="search" placeholder="Search for products" aria-label="Search">
             <button class="btn search-btn position-absolute" type="submit"><i class="bi bi-search"></i></button>
@@ -67,6 +64,7 @@
           </button>
         </div>
         <div class="top-search-right d-flex align-items-center">
+          <a href="">點我註冊</a>
           <a href="#" class="position-relative d-none d-lg-block ">
             <i class="bi bi-heart top-icon"></i>
             <span class="position-absolute badge badge-circle text-bg-success rounded-circle">5</span>

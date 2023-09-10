@@ -180,6 +180,10 @@ p {
   background-color: #c1c7c6;
   color: #5c6c75;
 }
+.top-search .container .top-search-right {
+  width: 300px;
+  justify-content: end;
+}
 .top-search .container .top-search-right .top-icon {
   font-size: 25px;
   margin-left: 25px;
