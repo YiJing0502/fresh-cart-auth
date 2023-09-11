@@ -145,10 +145,10 @@
             background-color: rgb(10, 173, 10) !important;
         }
 
-        /* .search-self{
+        .search-self{
             width:286px;
             height:41px;
-        } */
+        }
         .dropdown-self {
             height: 41px;
             background-color: white;
@@ -360,13 +360,12 @@
             background-color: rgb(240, 243, 242);
         }
         /* 0911- sidebar-btn-active */
-        .sidebar-btn-active {
+        .sidebar-btn-active:active {
             background-color: rgb(206, 239, 206);
         }
-
-
-
-
+        a {
+            text-decoration: none;
+        }
     </style>
     @yield('style')
 </head>
@@ -436,19 +435,23 @@
             </div>
             <div class="  left-menu l-menu-height  pt-1 d-xl-flex  overflow-y-scroll ">
                 <div class="accordion accordion-flush text-black-50" id="accordionFlushExample">
-                    <a class="accordion-header ">
+                    <a
+                    href="{{route('back.end.index')}}"
+                    class="accordion-header">
                         <button
                             class="accordion-button collapsed text-light-emphasis rounded-3 d-flex align-items-center sidebar-btn-active"
                             type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
                             aria-expanded="false" aria-controls="flush-collapseOne">
                             <i class="fa-regular fa-house-chimney fs-16-self"></i><span
-                                class="pt-1 ms-4">Dashboard</span>
+                                class="pt-1 ms-4">Dashboard123</span>
                         </button>
                     </a>
                     <div class="fs-6 pt-4 pb-2">
                         <span class="ms-4 fs-14-self text-light-emphasis">Store Managements</span>
                     </div>
-                    <a class="accordion-header">
+                    <a
+                    href="{{route('cartProductList')}}"
+                    class="accordion-header">
                         <button
                             class="accordion-button collapsed text-light-emphasis rounded-3 d-flex align-items-center"
                             type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
@@ -457,7 +460,9 @@
                                 class="pt-1 ms-4">Products</span>
                         </button>
                     </a>
-                    <a class="accordion-header">
+                    <a
+                    href="{{route('typeProductList')}}"
+                    class="accordion-header">
                         <button
                             class="accordion-button collapsed  text-light-emphasis rounded-3 d-flex align-items-center"
                             type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
@@ -681,13 +686,13 @@
                 <div class="accordion accordion-flush text-black-50" id="accordionFlushExample">
                     <a
                     @if (Route::currentRouteName() == 'back.end.index')
-                         class="accordion-header sidebar-btn-active"
+                         class="accordion-header"
                     @else
                          class="accordion-header"
                     @endif
                     href="{{route('back.end.index')}}">
                         <button
-                            class="accordion-button collapsed text-light-emphasis rounded-3 d-flex align-items-center  "
+                            class="accordion-button collapsed text-light-emphasis rounded-3 d-flex align-items-center"
                             type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
                             aria-expanded="false" aria-controls="flush-collapseOne">
                             <i class="fa-regular fa-house-chimney fs-16-self"></i>
@@ -700,7 +705,7 @@
                     </div>
                     <a
                     @if (Route::currentRouteName() == 'cartProductList')
-                         class="accordion-header sidebar-btn-active"
+                         class="accordion-header"
                     @else
                          class="accordion-header"
                     @endif
@@ -712,13 +717,18 @@
                             <i class="fa-light fa-cart-shopping fs-16-self fw-normal"></i>
                             <span class="pt-1 ms-4">Products</span>
                         </button>
-                    </>
-                    <a class="accordion-header">
+                    <a
+                    @if (Route::currentRouteName() == 'cartProductList')
+                         class="accordion-header"
+                    @else
+                         class="accordion-header"
+                    @endif
+                    href="{{route('typeProductList')}}">
                         <button
                             class="accordion-button collapsed  text-light-emphasis rounded-3 d-flex align-items-center"
                             type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
                             aria-expanded="false" aria-controls="flush-collapseTwo">
-                            <i class="fa-solid fa-list fs-16-self"></i><span class="pt-1 ms-4 ">Categories</span>
+                            <i class="fa-solid fa-list fs-16-self"></i><span class="pt-1 ms-4 ">Type</span>
                         </button>
                     </a>
                     <div class="accordion-item">
@@ -903,11 +913,13 @@
             <!-- 導航欄 -->
             <div class="nav row w-100 m-0 justify-content-between align-items-center bg-white">
                 <!-- 導航欄左側 -->
-                <div class="nav-left col-6 h-75 p-0  d-flex justify-content-start align-items-center">
-                    <div class="ham d-xl-none  "><i class="fa-solid fa-indent fa-rotate-180 fw-light fs-4"></i>
+                <div class="nav-left col-6 h-75 p-0  d-flex m-0 justify-content-start align-items-center">
+                    <div class="ham d-xl-none mr-3">
+                        <i class="fa-solid fa-indent fa-rotate-180 fw-light fs-4">
+                        </i>
                     </div>
-                    <form class="d-flex ms-3" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="d-flex" role="search">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
                     </form>
 
                 </div>
@@ -935,8 +947,6 @@
             <div class="right row w-100  m-0 px-0 pt-3 justify-content-center align-content-start">
                 @yield('main')
             </div>
-
-
         </div>
 
 @yield('js')
@@ -959,19 +969,19 @@
                 })
             }
             // 購物清單上點選第一行的checkbox後面的都會被勾選，或取消勾選
-            {
-                let inputAll = document.querySelector('.input-1');
-                let inputSize = document.querySelectorAll('.input-size');
+            // {
+            //     let inputAll = document.querySelector('.input-1');
+            //     let inputSize = document.querySelectorAll('.input-size');
 
-                inputAll.addEventListener('change', function() {
-                    const isChecked = this.checked;
+            //     inputAll.addEventListener('change', function() {
+            //         const isChecked = this.checked;
 
 
-                    inputSize.forEach(checkbox => {
-                        checkbox.checked = isChecked;
-                    });
-                });
-            }
+            //         inputSize.forEach(checkbox => {
+            //             checkbox.checked = isChecked;
+            //         });
+            //     });
+            // }
             // 按鈕動畫 .sidebar-btn-active
             {
                 const sidebarBtn = document.querySelectorAll('.sidebar-btn-active');
