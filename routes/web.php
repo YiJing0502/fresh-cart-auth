@@ -9,6 +9,8 @@ use App\Http\Controllers\FontController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\OrderController;
+// 後台主頁面
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,11 +42,17 @@ require __DIR__.'/auth.php';
 
 // 主頁面
 Route::get('/front-index', [FontController::class, 'index'])->name('front-index');
-// 前台使用者帳號資訊頁面區塊
-Route::middleware('auth')->get('/user/info', [FontController::class, 'user_info'])->name('user.info');
-Route::middleware('auth')->post('/user/info/update', [FontController::class, 'user_info_update'])->name('user.info.update');
-// 新增商品頁面
-Route::middleware('auth')->prefix('/cart')->group(function () {
+// 前台_使用者帳號資訊頁面區塊
+Route::middleware('auth', 'role.weight: 2')->get('/user/info', [FontController::class, 'user_info'])->name('user.info');
+Route::middleware('auth', 'role.weight: 2')->post('/user/info/update', [FontController::class, 'user_info_update'])->name('user.info.update');
+
+// 後台＿主頁面
+Route::middleware(['auth', 'role.weight: 1'])->prefix('/back.end')->group(
+    function () {
+        Route::get('/index', [AdminController::class, 'index'])->name('back.end.index');
+    });
+// 後台＿新增商品頁面
+Route::middleware('auth', 'role.weight: 1')->prefix('/cart')->group(function () {
     Route::get('/product-list', [CartController::class, 'index'])->name('cartProductList');
     Route::get('/add', [CartController::class, 'create'])->name('cartAdd');
     Route::post('/store', [CartController::class, 'store'])->name('cartStore');
@@ -53,8 +61,8 @@ Route::middleware('auth')->prefix('/cart')->group(function () {
     Route::post('/destroy/{id}', [CartController::class, 'destroy'])->name('cartDestroy');
 });
 
-// 產品類別區塊
-Route::prefix('/type')->group(function () {
+// 後台＿產品類別區塊
+Route::middleware('auth', 'role.weight: 1')->prefix('/type')->group(function () {
     Route::get('/product-list', [TypeController::class, 'index'])->name('typeProductList');
 
     Route::get('/add', [TypeController::class, 'create'])->name('typeAdd');
@@ -93,7 +101,6 @@ Route::middleware('auth')->prefix('/reply')->group(function () {
     Route::get('/edit/{id}', [ReplyController::class, 'edit'])->name('replyEdit');
     Route::put('/update/{id}', [ReplyController::class, 'update'])->name('replyUpdate');
 });
-
 
 //前台＿客戶訂單區塊
 Route::prefix('/order')->group(function () {

@@ -360,6 +360,7 @@
             background-color: rgb(240, 243, 242);
         }
     </style>
+    @yield('style')
 
 
 
@@ -908,8 +909,6 @@
             <!-- 右邊主欄 -->
             <div class="right row w-100  m-0 px-0 pt-3 justify-content-center align-content-start">
                 @yield('main')
-
-
             </div>
 
 

@@ -1,4 +1,4 @@
-@extends('templates.fontTemplete')
+@extends('templates.templete')
 @section('style')
     <style>
         .form-control:focus {
@@ -10,12 +10,13 @@
         }
     </style>
 @endsection
-@section('main-content')
+@section('main')
     <div class="container mt-5">
         <section class="user-info">
             <div class="alert alert-light" role="alert" style="width: 18rem;">
                 You're logged in!
             </div>
+
             <div class="card" style="width: 18rem;">
                 <img src="{{ asset('photo/login.jpg') }}" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -53,6 +54,7 @@
                 </div>
             </div>
         </section>
+
     </div>
 @endsection
 
