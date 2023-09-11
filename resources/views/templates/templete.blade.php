@@ -914,7 +914,7 @@
             <div class="nav row w-100 m-0 justify-content-between align-items-center bg-white">
                 <!-- 導航欄左側 -->
                 <div class="nav-left col-6 h-75 p-0  d-flex m-0 justify-content-start align-items-center">
-                    <div class="ham d-xl-none mr-3">
+                    <div class="ham d-xl-none">
                         <i class="fa-solid fa-indent fa-rotate-180 fw-light fs-4">
                         </i>
                     </div>
