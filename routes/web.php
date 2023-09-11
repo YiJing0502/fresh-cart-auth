@@ -25,26 +25,60 @@ use App\Http\Controllers\AdminController;
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+// 主頁面(任何人都可以看)
+Route::get('/front-index', [FontController::class, 'index'])->name('front-index');
 
-Route::middleware('auth')->group(function () {
+
+// 只有登入者可以進(前台功能區)
+Route::middleware(['auth', 'role.weight: 1'])->group(function () {
+    // 預設
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // 前台_使用者帳號資訊頁面區塊
+    Route::prefix('/user/info')->group(function () {
+        Route::get('/', [FontController::class, 'user_info'])->name('user.info');
+
+        Route::post('/update', [FontController::class, 'user_info_update'])->name('user.info.update');
+    });
+    // 前台＿留言板傳送訊息
+    Route::prefix('/message')->group(function () {
+        Route::get('/', [MessageController::class, 'index'])->name('messageIndex');
+
+        Route::post('/replayStore', [MessageController::class, 'replayStore'])->name('replayStore');
+        Route::post('/store', [MessageController::class, 'store'])->name('messageStore');
+
+        Route::get('/edit/{id}', [MessageController::class, 'edit'])->name('messageEdit');
+
+        Route::put('/replayUpdate/{id}', [MessageController::class, 'replayUpdate'])->name('replayUpdate');
+
+        Route::put('/update/{id}', [MessageController::class, 'update'])->name('messageUpdate');
+        // 刪除
+        Route::delete('/destroy/{id}', [MessageController::class, 'destroy'])->name('messageDestroy');
+
+        Route::delete('/reply/destroy/{id}', [MessageController::class, 'replayDestroy'])->name('replyDestroy');
+    });
+    // 前台＿留言板回覆訊息
+    Route::prefix('/reply')->group(function () {
+        Route::get('/index', [ReplyController::class, 'index'])->name('replyIndex');
+
+        Route::get('/add', [ReplyController::class, 'create'])->name('replyAdd');
+        Route::post('/store', [ReplyController::class, 'store'])->name('replyStore');
+
+        Route::get('/edit/{id}', [ReplyController::class, 'edit'])->name('replyEdit');
+        Route::put('/update/{id}', [ReplyController::class, 'update'])->name('replyUpdate');
+    });
 });
 
-require __DIR__.'/auth.php';
+
 
 // 之後新增的
 
-// 主頁面
-Route::get('/front-index', [FontController::class, 'index'])->name('front-index');
-// 前台_使用者帳號資訊頁面區塊
-Route::middleware('auth', 'role.weight: 2')->get('/user/info', [FontController::class, 'user_info'])->name('user.info');
-Route::middleware('auth', 'role.weight: 2')->post('/user/info/update', [FontController::class, 'user_info_update'])->name('user.info.update');
+
+
 
 // 後台＿主頁面_admin
 Route::middleware(['auth', 'role.weight: 1'])->prefix('/back-end')->group(
@@ -74,34 +108,6 @@ Route::middleware(['auth', 'role.weight: 1'])->prefix('/type')->group(function (
     Route::delete('/destroy/{id}', [TypeController::class, 'destroy'])->name('typeDestroy');
 });
 
-// 前台＿傳送訊息
-Route::middleware('auth')->prefix('/message')->group(function () {
-    Route::get('/', [MessageController::class, 'index'])->name('messageIndex');
-
-    Route::post('/replayStore', [MessageController::class, 'replayStore'])->name('replayStore');
-    Route::post('/store', [MessageController::class, 'store'])->name('messageStore');
-
-    Route::get('/edit/{id}', [MessageController::class, 'edit'])->name('messageEdit');
-
-    Route::put('/replayUpdate/{id}', [MessageController::class, 'replayUpdate'])->name('replayUpdate');
-
-    Route::put('/update/{id}', [MessageController::class, 'update'])->name('messageUpdate');
-    // 刪除
-    Route::delete('/destroy/{id}', [MessageController::class, 'destroy'])->name('messageDestroy');
-
-    Route::delete('/reply/destroy/{id}', [MessageController::class, 'replayDestroy'])->name('replyDestroy');
-});
-// 前台＿回覆訊息
-Route::middleware('auth')->prefix('/reply')->group(function () {
-    Route::get('/index', [ReplyController::class, 'index'])->name('replyIndex');
-
-    Route::get('/add', [ReplyController::class, 'create'])->name('replyAdd');
-    Route::post('/store', [ReplyController::class, 'store'])->name('replyStore');
-
-    Route::get('/edit/{id}', [ReplyController::class, 'edit'])->name('replyEdit');
-    Route::put('/update/{id}', [ReplyController::class, 'update'])->name('replyUpdate');
-});
-
 //前台＿客戶訂單區塊
 Route::prefix('/order')->group(function () {
     Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
@@ -110,3 +116,4 @@ Route::prefix('/order')->group(function () {
     Route::get('/thanks', [OrderController::class, 'thanks_index'])->name('order.thanks');
 
 });
+require __DIR__ . '/auth.php';
