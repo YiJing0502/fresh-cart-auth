@@ -17,6 +17,9 @@ class RoleWeight
     {
         $userRole = $request->user()?->user_role ?? 0;
         if (!str_contains($weight, strval($userRole))) {
+            if ($userRole == 1) {
+                return redirect(route('back.end.index'));
+            }
             return redirect(route('front-index'));
         }
         return $next($request);
