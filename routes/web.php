@@ -80,7 +80,7 @@ Route::middleware(['auth', 'role.weight: 1'])->group(function () {
     });
 });
 // 只有管理者可以進(後台功能區)
-Route::middleware(['auth', 'role.weight: 2'])->group(function() {
+Route::middleware(['auth', 'role.weight: 2'])->prefix('admin')->group(function() {
     // 後台＿主頁面_admin
     Route::prefix('/back-end')->group(
         function () {
