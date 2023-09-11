@@ -71,49 +71,43 @@ Route::middleware(['auth', 'role.weight: 1'])->group(function () {
         Route::get('/edit/{id}', [ReplyController::class, 'edit'])->name('replyEdit');
         Route::put('/update/{id}', [ReplyController::class, 'update'])->name('replyUpdate');
     });
-});
-
-
-
-// 之後新增的
-
-
-
-
-// 後台＿主頁面_admin
-Route::middleware(['auth', 'role.weight: 1'])->prefix('/back-end')->group(
-    function () {
-        Route::get('/index', [AdminController::class, 'index'])->name('back.end.index');
+    //前台＿客戶訂單區塊
+    Route::prefix('/order')->group(function () {
+        Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
+        Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
+        Route::get('/pay', [OrderController::class, 'pay_index'])->name('order.pay');
+        Route::get('/thanks', [OrderController::class, 'thanks_index'])->name('order.thanks');
     });
-// 後台＿新增商品頁面
-Route::middleware(['auth', 'role.weight: 1'])->prefix('/cart')->group(function () {
-    Route::get('/product-list', [CartController::class, 'index'])->name('cartProductList');
-    Route::get('/add', [CartController::class, 'create'])->name('cartAdd');
-    Route::post('/store', [CartController::class, 'store'])->name('cartStore');
-    Route::get('/edit/{id}', [CartController::class, 'edit'])->name('cartEdit');
-    Route::post('/update/{id}', [CartController::class, 'update'])->name('cartUpdate');
-    Route::post('/destroy/{id}', [CartController::class, 'destroy'])->name('cartDestroy');
+});
+// 只有管理者可以進(後台功能區)
+Route::middleware(['auth', 'role.weight: 2'])->group(function() {
+    // 後台＿主頁面_admin
+    Route::prefix('/back-end')->group(
+        function () {
+            Route::get('/index', [AdminController::class, 'index'])->name('back.end.index');
+        }
+    );
+    // 後台＿新增商品頁面
+    Route::prefix('/cart')->group(function () {
+        Route::get('/product-list', [CartController::class, 'index'])->name('cartProductList');
+        Route::get('/add', [CartController::class, 'create'])->name('cartAdd');
+        Route::post('/store', [CartController::class, 'store'])->name('cartStore');
+        Route::get('/edit/{id}', [CartController::class, 'edit'])->name('cartEdit');
+        Route::post('/update/{id}', [CartController::class, 'update'])->name('cartUpdate');
+        Route::post('/destroy/{id}', [CartController::class, 'destroy'])->name('cartDestroy');
+    });
+    // 後台＿產品類別區塊
+    Route::prefix('/type')->group(function () {
+        Route::get('/product-list', [TypeController::class, 'index'])->name('typeProductList');
+
+        Route::get('/add', [TypeController::class, 'create'])->name('typeAdd');
+        Route::post('/store', [TypeController::class, 'store'])->name('typeStore');
+
+        Route::get('/edit/{id}', [TypeController::class, 'edit'])->name('typeEdit');
+        Route::put('/update/{id}', [TypeController::class, 'update'])->name('typeUpdate');
+        // 刪除
+        Route::delete('/destroy/{id}', [TypeController::class, 'destroy'])->name('typeDestroy');
+    });
 });
 
-// 後台＿產品類別區塊
-Route::middleware(['auth', 'role.weight: 1'])->prefix('/type')->group(function () {
-    Route::get('/product-list', [TypeController::class, 'index'])->name('typeProductList');
-
-    Route::get('/add', [TypeController::class, 'create'])->name('typeAdd');
-    Route::post('/store', [TypeController::class, 'store'])->name('typeStore');
-
-    Route::get('/edit/{id}', [TypeController::class, 'edit'])->name('typeEdit');
-    Route::put('/update/{id}', [TypeController::class, 'update'])->name('typeUpdate');
-    // 刪除
-    Route::delete('/destroy/{id}', [TypeController::class, 'destroy'])->name('typeDestroy');
-});
-
-//前台＿客戶訂單區塊
-Route::prefix('/order')->group(function () {
-    Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
-    Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
-    Route::get('/pay', [OrderController::class, 'pay_index'])->name('order.pay');
-    Route::get('/thanks', [OrderController::class, 'thanks_index'])->name('order.thanks');
-
-});
 require __DIR__ . '/auth.php';
