@@ -84,8 +84,6 @@
                         <i class="bi bi-heart top-icon"></i>
                         <span class="position-absolute badge badge-circle text-bg-success rounded-circle">5</span>
                     </a>
-
-                    {{-- @dd(Auth::user()->user_role); --}}
                     @if (Auth::check())
                         @if (Auth::user()->user_role === 2)
                             <a href="{{ route('user.info') }}">

@@ -15,13 +15,17 @@ class RoleWeight
      */
     public function handle(Request $request, Closure $next, $weight): Response
     {
-        $userRole = $request->user()?->user_role ?? 0;
+        // 寫法一（老師的方法）
+        $user = $request->user();
+        $userRole = $user?->user_role ?? 0;
         if (!str_contains($weight, strval($userRole))) {
-            if ($userRole == 1) {
+            if ($userRole === 1) {
                 return redirect(route('back.end.index'));
             }
             return redirect(route('front-index'));
         }
         return $next($request);
+
+
     }
 }

@@ -22,18 +22,15 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// 主頁面(任何人都可以看)
+Route::get('/', [FontController::class, 'index'])->name('front-index');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-// 主頁面(任何人都可以看)
-Route::get('/front-index', [FontController::class, 'index'])->name('front-index');
-
 
 // 只有登入者可以進(前台功能區)
-Route::middleware(['auth', 'role.weight: 1'])->group(function () {
+Route::middleware(['auth', 'role.weight: 2'])->group(function () {
     // 預設
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -80,7 +77,7 @@ Route::middleware(['auth', 'role.weight: 1'])->group(function () {
     });
 });
 // 只有管理者可以進(後台功能區)
-Route::middleware(['auth', 'role.weight: 2'])->prefix('/admin')->group(function() {
+Route::middleware(['auth', 'role.weight: 1'])->prefix('/admin')->group(function() {
     // 後台＿主頁面_admin
     Route::prefix('/back-end')->group(
         function () {
