@@ -359,6 +359,14 @@
         .login-block div:nth-of-type(2) div:hover {
             background-color: rgb(240, 243, 242);
         }
+        /* 0911- sidebar-btn-active */
+        .sidebar-btn-active {
+            background-color: rgb(206, 239, 206);
+        }
+
+
+
+
     </style>
     @yield('style')
 </head>
@@ -430,7 +438,7 @@
                 <div class="accordion accordion-flush text-black-50" id="accordionFlushExample">
                     <a class="accordion-header ">
                         <button
-                            class="accordion-button collapsed text-light-emphasis rounded-3 d-flex align-items-center  "
+                            class="accordion-button collapsed text-light-emphasis rounded-3 d-flex align-items-center sidebar-btn-active"
                             type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
                             aria-expanded="false" aria-controls="flush-collapseOne">
                             <i class="fa-regular fa-house-chimney fs-16-self"></i><span
@@ -673,11 +681,11 @@
                 <div class="accordion accordion-flush text-black-50" id="accordionFlushExample">
                     <a
                     @if (Route::currentRouteName() == 'back.end.index')
-                        class=""
+                         class="accordion-header sidebar-btn-active"
                     @else
-                        class=""
+                         class="accordion-header"
                     @endif
-                    class="accordion-header">
+                    href="{{route('back.end.index')}}">
                         <button
                             class="accordion-button collapsed text-light-emphasis rounded-3 d-flex align-items-center  "
                             type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
@@ -690,7 +698,13 @@
                     <div class="fs-6 pt-4 pb-2">
                         <span class="ms-4 fs-14-self text-light-emphasis">Store Managements</span>
                     </div>
-                    <a class="accordion-header">
+                    <a
+                    @if (Route::currentRouteName() == 'cartProductList')
+                         class="accordion-header sidebar-btn-active"
+                    @else
+                         class="accordion-header"
+                    @endif
+                    href="{{route('cartProductList')}}">
                         <button
                             class="accordion-button collapsed text-light-emphasis rounded-3 d-flex align-items-center"
                             type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
@@ -698,7 +712,7 @@
                             <i class="fa-light fa-cart-shopping fs-16-self fw-normal"></i>
                             <span class="pt-1 ms-4">Products</span>
                         </button>
-                    </a>
+                    </>
                     <a class="accordion-header">
                         <button
                             class="accordion-button collapsed  text-light-emphasis rounded-3 d-flex align-items-center"
@@ -958,6 +972,12 @@
                     });
                 });
             }
+            // 按鈕動畫 .sidebar-btn-active
+            {
+                const sidebarBtn = document.querySelectorAll('.sidebar-btn-active');
+                console.log(sidebarBtn);
+            }
+
         </script>
 
 
