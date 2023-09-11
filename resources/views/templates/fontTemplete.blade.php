@@ -77,16 +77,30 @@
                         </form>
                     @endauth
                     @guest()
-                    <a href="{{ route('login') }}">點我登入</a>
+                        <a href="{{ route('login') }}">點我登入</a>
                     @endguest
 
                     <a href="#" class="position-relative d-none d-lg-block ">
                         <i class="bi bi-heart top-icon"></i>
                         <span class="position-absolute badge badge-circle text-bg-success rounded-circle">5</span>
                     </a>
-                    <a href="{{ route('user.info') }}">
-                        <i class="bi bi-person top-icon"></i>
-                    </a>
+
+                    {{-- @dd(Auth::user()->user_role); --}}
+                    @if (Auth::check())
+                        @if (Auth::user()->user_role === 2)
+                            <a href="{{ route('user.info') }}">
+                                <i class="bi bi-person top-icon"></i>
+                            </a>
+                        @elseif (Auth::user()->user_role === 1)
+                            <a href="{{ route('back.end.index') }}">
+                                <i class="bi bi-person top-icon"></i>
+                            </a>
+                        @endif
+                    @else
+                        <a href="{{ route('login') }}">
+                            <i class="bi bi-person top-icon"></i>
+                        </a>
+                    @endif
                     <a href="#" class="position-relative">
                         <i class="bi bi-cart2 top-icon"></i>
                         <span class="position-absolute badge badge-circle text-bg-success rounded-circle">1</span>

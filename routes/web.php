@@ -71,7 +71,7 @@ Route::middleware(['auth', 'role.weight: 1'])->group(function () {
         Route::get('/edit/{id}', [ReplyController::class, 'edit'])->name('replyEdit');
         Route::put('/update/{id}', [ReplyController::class, 'update'])->name('replyUpdate');
     });
-    //前台＿客戶訂單區塊
+    // 前台＿客戶訂單區塊
     Route::prefix('/order')->group(function () {
         Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
         Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
@@ -80,7 +80,7 @@ Route::middleware(['auth', 'role.weight: 1'])->group(function () {
     });
 });
 // 只有管理者可以進(後台功能區)
-Route::middleware(['auth', 'role.weight: 2'])->prefix('admin')->group(function() {
+Route::middleware(['auth', 'role.weight: 2'])->prefix('/admin')->group(function() {
     // 後台＿主頁面_admin
     Route::prefix('/back-end')->group(
         function () {
