@@ -18,6 +18,8 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/front-index';
+    public const ADMIN = '/back-end/index';
+
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

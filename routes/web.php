@@ -46,13 +46,13 @@ Route::get('/front-index', [FontController::class, 'index'])->name('front-index'
 Route::middleware('auth', 'role.weight: 2')->get('/user/info', [FontController::class, 'user_info'])->name('user.info');
 Route::middleware('auth', 'role.weight: 2')->post('/user/info/update', [FontController::class, 'user_info_update'])->name('user.info.update');
 
-// 後台＿主頁面
-Route::middleware(['auth', 'role.weight: 1'])->prefix('/back.end')->group(
+// 後台＿主頁面_admin
+Route::middleware(['auth', 'role.weight: 1'])->prefix('/back-end')->group(
     function () {
         Route::get('/index', [AdminController::class, 'index'])->name('back.end.index');
     });
 // 後台＿新增商品頁面
-Route::middleware('auth', 'role.weight: 1')->prefix('/cart')->group(function () {
+Route::middleware(['auth', 'role.weight: 1'])->prefix('/cart')->group(function () {
     Route::get('/product-list', [CartController::class, 'index'])->name('cartProductList');
     Route::get('/add', [CartController::class, 'create'])->name('cartAdd');
     Route::post('/store', [CartController::class, 'store'])->name('cartStore');
@@ -62,7 +62,7 @@ Route::middleware('auth', 'role.weight: 1')->prefix('/cart')->group(function () 
 });
 
 // 後台＿產品類別區塊
-Route::middleware('auth', 'role.weight: 1')->prefix('/type')->group(function () {
+Route::middleware(['auth', 'role.weight: 1'])->prefix('/type')->group(function () {
     Route::get('/product-list', [TypeController::class, 'index'])->name('typeProductList');
 
     Route::get('/add', [TypeController::class, 'create'])->name('typeAdd');

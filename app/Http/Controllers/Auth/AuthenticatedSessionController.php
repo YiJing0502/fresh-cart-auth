@@ -29,6 +29,12 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         // 生成金鑰
         $request->session()->regenerate();
+        // 角色分流
+        $userRole = $request->user()?->user_role ?? 0;
+        if ($userRole === 1) {
+            // 將業主登入後送到後台
+            return redirect()->intended(RouteServiceProvider::ADMIN);
+        }
         // 導向以及預設路由
         return redirect()->intended(RouteServiceProvider::HOME);
     }
