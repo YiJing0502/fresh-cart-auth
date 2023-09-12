@@ -2,16 +2,16 @@
 @section('style')
 <style>
     /* 清除按钮的默认样式 */
-button, input[type="button"], input[type="submit"] {
-    border: none; /* 移除边框 */
-    background: none; /* 移除背景颜色 */
-    padding: 0; /* 移除内边距 */
-    margin: 0; /* 移除外边距 */
-    font-family: inherit; /* 使用父元素的字体 */
-    font-size: inherit; /* 使用父元素的字体大小 */
-    cursor: pointer; /* 添加指针样式，以表示按钮 */
-    color: #5c6c75;
-}
+    button, input[type="button"], input[type="submit"] {
+        border: none; /* 移除边框 */
+        background: none; /* 移除背景颜色 */
+        padding: 0; /* 移除内边距 */
+        margin: 0; /* 移除外边距 */
+        font-family: inherit; /* 使用父元素的字体 */
+        font-size: inherit; /* 使用父元素的字体大小 */
+        cursor: pointer; /* 添加指针样式，以表示按钮 */
+        color: #5c6c75;
+    }
 </style>
 @endsection
 @section('main-content')
@@ -259,7 +259,6 @@ button, input[type="button"], input[type="submit"] {
         </div>
 
         @endforeach
-
         </div>
       </div>
     </section>
