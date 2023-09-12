@@ -33,7 +33,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // 只有登入者可以進(前台功能區)
-Route::middleware(['auth', 'role.weight: 2'])->group(function () {
+Route::middleware(['auth', 'role.weight: 1,2'])->group(function () {
     // 預設
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
