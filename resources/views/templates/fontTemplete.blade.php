@@ -99,7 +99,7 @@
                             <i class="bi bi-person top-icon"></i>
                         </a>
                     @endif
-                    <a href="#" class="position-relative">
+                    <a href="{{ route('order.list') }}" class="position-relative">
                         <i class="bi bi-cart2 top-icon"></i>
                         <span class="position-absolute badge badge-circle text-bg-success rounded-circle">1</span>
                     </a>

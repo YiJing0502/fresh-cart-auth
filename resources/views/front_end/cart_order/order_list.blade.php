@@ -82,6 +82,18 @@
             border-width: 10px;
             border-radius: 10px 0px 10px 0px;
         }
+           /* 隱藏input arrows的功能 */
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
     </style>
 @endsection
 @section('main-content')
