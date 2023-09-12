@@ -8,6 +8,7 @@ class ProductTypeShowController extends Controller
 {
     //
     public function allIndex () {
+        
         return view('front_end.product_type.all-product');
     }
 }

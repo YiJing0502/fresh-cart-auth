@@ -378,13 +378,13 @@
         </div>
         <div class="top-nav">
             <div class="container d-none d-lg-flex align-items-center pb-3">
-                <div class="dropdown">
+                <a class="dropdown" href="{{route('product.type.all')}}">
                     <button type="button" class="btn dropdown-toggle all-departments-btn d-none d-lg-block fs-6-7"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-grid me-1"></i>
                         <span>查看所有商品</span>
                     </button>
-                </div>
+                </a>
                 <ul class="top-nav-menu d-flex p-0 m-0">
                     <li class="top-nav-item">
                         <div class="dropdown">
