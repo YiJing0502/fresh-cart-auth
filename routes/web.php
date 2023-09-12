@@ -4,7 +4,10 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 // 之後新增的
 use App\Http\Controllers\CartController;
+// 後台設定產品類別
 use App\Http\Controllers\TypeController;
+// 前台顯示產品類別
+use App\Http\Controllers\ProductTypeShowController;
 use App\Http\Controllers\FontController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ReplyController;
@@ -74,6 +77,10 @@ Route::middleware(['auth', 'role.weight: 2'])->group(function () {
         Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
         Route::get('/pay', [OrderController::class, 'pay_index'])->name('order.pay');
         Route::get('/thanks', [OrderController::class, 'thanks_index'])->name('order.thanks');
+    });
+    // 前台＿顯示產品分類
+    Route::prefix('/product/type')->group(function () {
+        Route::get('/all', [ProductTypeShowController::class, 'allIndex'])->name('product.type.all');
     });
 });
 // 只有管理者可以進(後台功能區)
