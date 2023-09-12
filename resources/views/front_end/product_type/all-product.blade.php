@@ -142,8 +142,8 @@
                             </div>
                             <div class="product-count d-flex align-items-center mb-3">
                                 <button type="button" class="btn h-100 btn-count">+</button>
-                                <input class="count-form-control" type="number" placeholder="商品數量"
-                                    aria-label="default input example">
+                                {{-- 輸入匡 --}}
+                                <input id="product{{$item->id}}" class="count-form-control" type="number" placeholder="商品數量" value="1">
                                 <button type="button" class="btn btn-count">-</button>
                             </div>
                             <div class="d-flex justify-content-between w-100">

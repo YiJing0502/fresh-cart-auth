@@ -134,9 +134,10 @@
                             <h6>冰紛樂</h6>
                             <p>1kg</p>
                         </div>
+                        {{-- 加減按鈕 --}}
                         <div class="product-count d-flex align-items-center">
                             <button type="button" class="btn h-100 btn-count">+</button>
-                            <input class="count-form-control" type="number" placeholder="商品數量"
+                            <input class="count-form-control" type="number" placeholder="商品數量" onchange="checkQty(this)"
                                 aria-label="default input example">
                             <button type="button" class="btn btn-count">-</button>
                         </div>
@@ -179,5 +180,12 @@
     </div>
 @endsection
 @section('js')
-    <script></script>
+    <script>
+        function checkQty(inputNum) {
+            console.log(inputNum);
+            if (inputNum.value <= 0) {
+                inputNum.value = 1;
+            }
+        }
+    </script>
 @endsection
