@@ -382,17 +382,8 @@
                     <button type="button" class="btn dropdown-toggle all-departments-btn d-none d-lg-block fs-6-7"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-grid me-1"></i>
-                        <span>All Departments</span>
+                        <span>查看所有商品</span>
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Dairy, Bread & Eggs</a></li>
-                        <li><a class="dropdown-item" href="#">Snacks & Munchies</a></li>
-                        <li><a class="dropdown-item" href="#">Fruits & Vegetables</a></li>
-                        <li><a class="dropdown-item" href="#">Cold Drinks & Juices</a></li>
-                        <li><a class="dropdown-item" href="#">Breakfast & Instant Food</a></li>
-                        <li><a class="dropdown-item" href="#">Bakery & Biscuits</a></li>
-                        <li><a class="dropdown-item" href="#">Chicken, Meat & Fish</a></li>
-                    </ul>
                 </div>
                 <ul class="top-nav-menu d-flex p-0 m-0">
                     <li class="top-nav-item">
