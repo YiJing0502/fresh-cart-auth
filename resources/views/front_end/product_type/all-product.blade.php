@@ -154,14 +154,18 @@
                                 <div>
                                     <span class="fs-6">${{ $item->price }}</span>
                                 </div>
-                                <a href="#" class="btn btn-primary ms-auto btn-add"><i
-                                        class="bi bi-plus-lg me-1"></i>加入購物車</a>
+                                <button type="button" class="btn btn-primary ms-auto btn-add"
+                                    onclick="addCart({{ $item->id }})">
+                                    <i class="bi bi-plus-lg me-1"></i>
+                                    <span>加入購物車</span>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
+        <input id="productTypeAll" type="hidden" value="{{route('product.type.all')}}">
     </div>
 @endsection
 @section('js')
@@ -199,6 +203,29 @@
             } else {
                 console.log('fail');
             }
+        }
+
+        function addCart(id) {
+            console.log(123);
+            const input = document.querySelector(`input#product${id}`);
+            const formData = new FormData();
+            const productTypeAll = document.querySelector(`input#productTypeAll`).value;
+
+            // 送出給購物車表單
+            formData.append('_token', '{{ csrf_token()}}');
+            // 產品id
+            formData.append('product_id', id);
+            // 數量
+            formData.append('desire_qty', input.value);
+            console.log(productTypeAll);
+            fetch(productTypeAll, {
+                method: 'POST',
+                body: formData,
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                log(data);
+            })
         }
     </script>
 @endsection
