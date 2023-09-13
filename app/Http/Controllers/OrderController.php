@@ -12,8 +12,13 @@ class OrderController extends Controller
     // 將產品加入購物車
     public function add_cart(Request $request)
     {
-        // 查看拿到什麼
-        dd($request->all());
+
+        $request->validate([
+            'product_id' => 'required|min:1|numeric|exists:products,id',
+            'desire_qty' => 'required|numeric',
+        ]);
+         // 查看拿到什麼、是否可以取值
+        // dd($request->desire_qty);
     }
     // 購物車下訂單的四頁
     public function list_index()
