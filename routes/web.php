@@ -14,6 +14,7 @@ use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\OrderController;
 // 後台主頁面
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ShopController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -85,6 +86,19 @@ Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
         Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
         Route::get('/pay', [OrderController::class, 'pay_index'])->name('order.pay');
         Route::get('/thanks', [OrderController::class, 'thanks_index'])->name('order.thanks');
+    });
+    // 前台＿客戶訂單區塊(同學)
+    Route::prefix('/shop')->group(function () {
+        Route::get('/orderDetails', [ShopController::class, 'orderDetailsIndex'])->name('shopOrderDetailsGet');
+
+        Route::get('/deliver', [ShopController::class, 'deliverIndex'])->name('shopDeliverGet');
+        Route::post('/deliver', [ShopController::class, 'deliver'])->name('shopDeliverPost');
+
+        Route::get('/money', [ShopController::class, 'moneyIndex'])->name('shopMoneyGet');
+        Route::post('/money', [ShopController::class, 'money'])->name('shopMoneyPost');
+
+        Route::get('/thx', [ShopController::class, 'thxIndex'])->name('shopThxGet');
+        Route::post('/thx', [ShopController::class, 'thx'])->name('shopThxPost');
     });
 });
 // 只有管理者可以進(後台功能區)

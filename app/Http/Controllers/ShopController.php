@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\OrderCreated;
-use App\Models\Cart;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Cart;
 
 
-class OrderController extends Controller
+class ShopController extends Controller
 {
+    //
     // 將產品加入購物車
     public function add_cart(Request $request)
     {
@@ -18,7 +17,7 @@ class OrderController extends Controller
             'product_id' => 'required|min:1|numeric|exists:products,id',
             'desire_qty' => 'required|numeric',
         ]);
-         // 查看拿到什麼、是否可以取值
+        // 查看拿到什麼、是否可以取值
         // dd($request->desire_qty);
         // 假設右邊可以創立成功， $cart就可以拿到資料，創立不成功就無法拿到資料， $cart為null
         // 將相同產品的訂單qty疊加，先去找之前的訂單是否存在
@@ -44,33 +43,23 @@ class OrderController extends Controller
             'product_id' => $request->product_id,
         ];
     }
-    // 購物車下訂單的四頁
-    public function list_index()
+    public function orderDetailsIndex()
     {
-        return view('front_end.cart_order.order_list');
+        return view('front_end.shopprocess.orderdetails');
     }
-    public function tran_index()
+
+    public function deliverIndex()
     {
-        return view('front_end.cart_order.order_tran');
+        return view('front_end.shopprocess.deliver');
     }
-    public function pay_index()
+
+    public function moneyIndex()
     {
-        return view('front_end.cart_order.order_pay');
+        return view('front_end.shopprocess.money');
     }
-    public function thanks_index()
+
+    public function thxIndex()
     {
-        return view('front_end.cart_order.order_thanks');
+        return view('front_end.shopprocess.thx');
     }
-    public function thanks_store(Request $request) {
-
-        $orderData = $request->all();
-        Mail::to('w71080635@gmail.com')->send(new OrderCreated($orderData));
-
-    }
-
-
-
-
-
-
 }
