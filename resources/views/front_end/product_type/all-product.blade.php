@@ -165,7 +165,7 @@
                 </div>
             @endforeach
         </div>
-        <input id="productTypeAll" type="hidden" value="{{route('product.type.all')}}">
+        <input id="oderAddCart"  value="{{route('order.add.cart')}}">
     </div>
 @endsection
 @section('js')
@@ -209,7 +209,7 @@
             console.log(123);
             const input = document.querySelector(`input#product${id}`);
             const formData = new FormData();
-            const productTypeAll = document.querySelector(`input#productTypeAll`).value;
+            const oderAddCart = document.querySelector(`input#oderAddCart`).value;
 
             // 送出給購物車表單
             formData.append('_token', '{{ csrf_token()}}');
@@ -217,12 +217,12 @@
             formData.append('product_id', id);
             // 數量
             formData.append('desire_qty', input.value);
-            console.log(productTypeAll);
-            fetch(productTypeAll, {
+            console.log(oderAddCart);
+            fetch(oderAddCart, {
                 method: 'POST',
                 body: formData,
             }).then((response) => {
-                return response.json();
+                return response.text();
             }).then((data) => {
                 log(data);
             })

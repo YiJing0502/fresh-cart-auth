@@ -38,7 +38,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // 只有登入者可以進(前台功能區)
-Route::middleware(['auth', 'role.weight: 1,2'])->group(function () {
+Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
     // 預設
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -79,7 +79,7 @@ Route::middleware(['auth', 'role.weight: 1,2'])->group(function () {
     // 前台＿客戶訂單區塊
     Route::prefix('/order')->group(function () {
         // 將產品加入購物車
-        Route::get('/add/cart', [OrderController::class, 'add_cart'])->name('order.add.cart');
+        Route::post('/add/cart', [OrderController::class, 'add_cart'])->name('order.add.cart');
         // 購物車下訂單的四頁
         Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
         Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
