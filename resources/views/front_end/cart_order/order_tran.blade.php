@@ -55,7 +55,7 @@
                     <input class="form-control mb-2" type="text" placeholder="收件者姓名" aria-label="default input example">
                     <input class="form-control mb-2" type="text" placeholder="收件者地址" aria-label="default input example">
                     <input class="form-control mb-2" type="date" placeholder="配送日期" aria-label="default input example">
-                    <input class="form-control mb-2" type="number" placeholder="收件者聯絡電話"
+                    <input class="form-control mb-2" type="tel" placeholder="收件者聯絡電話"
                         aria-label="default input example">
                     <input class="form-control mb-2" type="text" placeholder="收件者地址" aria-label="default input example">
                 </li>

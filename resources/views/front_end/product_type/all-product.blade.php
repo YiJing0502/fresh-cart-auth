@@ -141,10 +141,14 @@
                                 </a>
                             </div>
                             <div class="product-count d-flex align-items-center mb-3">
-                                <button type="button" class="btn h-100 btn-count">+</button>
+                                {{-- plus 加 --}}
+                                <button type="button" class="btn h-100 btn-count"
+                                    onclick="plus({{ $item->id }})">+</button>
                                 {{-- 輸入匡 --}}
-                                <input id="product{{$item->id}}" class="count-form-control" type="number" placeholder="商品數量" value="1">
-                                <button type="button" class="btn btn-count">-</button>
+                                <input id="product{{ $item->id }}" class="count-form-control" type="number"
+                                    placeholder="商品數量" value="1">
+                                {{-- minus 減 --}}
+                                <button type="button" class="btn btn-count" onclick="minus({{ $item->id }})">-</button>
                             </div>
                             <div class="d-flex justify-content-between w-100">
                                 <div>
@@ -161,5 +165,40 @@
     </div>
 @endsection
 @section('js')
-    <script></script>
+    <script>
+        // 增加功能
+        function plus(id) {
+            const input = document.querySelector(`input#product${id}`);
+            let inputNum = parseInt(input.value);
+            console.dir(input.value);
+            console.log(typeof input.value);
+            if (inputNum < 1) {
+                input.value = '1';
+            } else if (!isNaN(inputNum)) {
+                // 將字串轉成整數
+                inputNum = Math.max(inputNum + 1, 1);
+                // 計算完後賦值
+                input.value = inputNum.toString();
+            } else {
+                console.log('fail');
+            }
+        }
+        // 減少功能
+        function minus(id) {
+            const input = document.querySelector(`input#product${id}`);
+            let inputNum = parseInt(input.value);
+            console.dir(input.value);
+            console.log(typeof input.value);
+            if (inputNum < 1) {
+                input.value = '1';
+            } else if (!isNaN(inputNum)) {
+                // 將字串轉成整數
+                inputNum = Math.max(inputNum - 1, 1);
+                // 計算完後賦值
+                input.value = inputNum.toString();
+            } else {
+                console.log('fail');
+            }
+        }
+    </script>
 @endsection
