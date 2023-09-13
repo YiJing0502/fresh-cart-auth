@@ -21,11 +21,22 @@ class OrderController extends Controller
          // 查看拿到什麼、是否可以取值
         // dd($request->desire_qty);
         // 假設右邊可以創立成功， $cart就可以拿到資料，創立不成功就無法拿到資料， $cart為null
-        $cart = Cart::create([
-            'product_id' => $request->product_id,
-            'desire_qty' => $request->desire_qty,
-            'user_id' => $request->user()->id,
-        ]);
+        // 將相同產品的訂單qty疊加，先去找之前的訂單是否存在
+        $oldCart = Cart::where('user_id', $request->user()->id)->where('product_id', $request->product_id)->first();
+        // 如果存在這筆就的訂單，就把原本的qty加上，不存在就創立一筆新的訂單
+        if ($oldCart) {
+            // 先找到資料在更新
+            $cart = $oldCart->update([
+                'desire_qty' => $oldCart->desire_qty + $request->desire_qty,
+            ]);
+        } else {
+            // 創立一筆新訂單
+            $cart = Cart::create([
+                'product_id' => $request->product_id,
+                'desire_qty' => $request->desire_qty,
+                'user_id' => $request->user()->id,
+            ]);
+        }
         // 回傳物件，前台使用json轉譯
         return (object)[
             // 判斷是否存在true=1,false=0
