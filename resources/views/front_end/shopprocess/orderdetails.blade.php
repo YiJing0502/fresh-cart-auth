@@ -21,6 +21,7 @@
 @endsection
 
 @section('main-content')
+@dump($cart)
     <div class="order-list d-flex flex-column">
         <div class="container">
             <div class="w-100 bg-light ">

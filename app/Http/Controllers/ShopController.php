@@ -43,9 +43,10 @@ class ShopController extends Controller
             'product_id' => $request->product_id,
         ];
     }
-    public function orderDetailsIndex()
+    public function orderDetailsIndex(Request $request)
     {
-        return view('front_end.shopprocess.orderdetails');
+        $cart = Cart::where('user_id', $request->user()->id)->get();
+        return view('front_end.shopprocess.orderdetails', compact('cart'));
     }
 
     public function deliverIndex()

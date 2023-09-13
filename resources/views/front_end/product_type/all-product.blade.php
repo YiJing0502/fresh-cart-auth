@@ -154,18 +154,25 @@
                                 <div>
                                     <span class="fs-6">${{ $item->price }}</span>
                                 </div>
-                                <button type="button" class="btn btn-primary ms-auto btn-add"
-                                    onclick="addCart({{ $item->id }})">
-                                    <i class="bi bi-plus-lg me-1"></i>
-                                    <span>加入購物車</span>
-                                </button>
+                                @if (Auth::check())
+                                    <button type="button" class="btn btn-primary ms-auto btn-add"
+                                        onclick="addCart({{ $item->id }})">
+                                        <i class="bi bi-plus-lg me-1"></i>
+                                        <span>加入購物車</span>
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn btn-primary ms-auto btn-add">
+                                        <i class="bi bi-plus-lg me-1"></i>
+                                        <span>加入購物車</span>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
-        <input id="oderAddCart"  value="{{route('order.add.cart')}}">
+        <input id="oderAddCart" value="{{ route('order.add.cart') }}">
     </div>
 @endsection
 @section('js')
@@ -212,7 +219,7 @@
             const oderAddCart = document.querySelector(`input#oderAddCart`).value;
 
             // 送出給購物車表單
-            formData.append('_token', '{{ csrf_token()}}');
+            formData.append('_token', '{{ csrf_token() }}');
             // 產品id
             formData.append('product_id', id);
             // 數量
