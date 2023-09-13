@@ -24,9 +24,14 @@ use App\Http\Controllers\AdminController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-// 主頁面(任何人都可以看)
+// 任何人都可以看
+// 主頁面
 Route::get('/', [FontController::class, 'index'])->name('front-index');
+// 產品頁面
+Route::prefix('/product/type')->group(function () {
+    // 所有產品
+    Route::get('/all', [ProductTypeShowController::class, 'allIndex'])->name('product.type.all');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -73,14 +78,13 @@ Route::middleware(['auth', 'role.weight: 1,2'])->group(function () {
     });
     // 前台＿客戶訂單區塊
     Route::prefix('/order')->group(function () {
+        // 將產品加入購物車
+        Route::get('/add/cart', [OrderController::class, 'add_cart'])->name('order.add.cart');
+        // 購物車下訂單的四頁
         Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
         Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
         Route::get('/pay', [OrderController::class, 'pay_index'])->name('order.pay');
         Route::get('/thanks', [OrderController::class, 'thanks_index'])->name('order.thanks');
-    });
-    // 前台＿顯示產品分類
-    Route::prefix('/product/type')->group(function () {
-        Route::get('/all', [ProductTypeShowController::class, 'allIndex'])->name('product.type.all');
     });
 });
 // 只有管理者可以進(後台功能區)
