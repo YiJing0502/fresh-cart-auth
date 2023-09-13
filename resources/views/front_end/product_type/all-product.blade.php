@@ -222,10 +222,15 @@
                 method: 'POST',
                 body: formData,
             }).then((response) => {
-                return response.text();
+                return response.json();
             }).then((data) => {
-                log(data);
+                console.log(data);
+                if (data.code === 1) {
+                    console.log('成功');
+                    Swal.fire('成功加入購物車');
+                }
             })
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
