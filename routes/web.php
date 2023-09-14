@@ -77,7 +77,7 @@ Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
         Route::get('/edit/{id}', [ReplyController::class, 'edit'])->name('replyEdit');
         Route::put('/update/{id}', [ReplyController::class, 'update'])->name('replyUpdate');
     });
-    // 前台＿客戶訂單區塊
+    // 前台＿o將產品加入購物車/o購物車頁更新產品數量/x客戶訂單區塊
     Route::prefix('/order')->group(function () {
         // 將產品加入購物車
         Route::post('/add/cart', [OrderController::class, 'add_cart'])->name('order.add.cart');
@@ -89,12 +89,12 @@ Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
         Route::get('/pay', [OrderController::class, 'pay_index'])->name('order.pay');
         Route::get('/thanks', [OrderController::class, 'thanks_index'])->name('order.thanks');
     });
-    // 前台＿客戶訂單區塊(同學)
+    // 前台＿o客戶訂單區塊(同學)
     Route::prefix('/shop')->group(function () {
         Route::get('/orderDetails', [ShopController::class, 'orderDetailsIndex'])->name('shopOrderDetailsGet');
 
         Route::get('/deliver', [ShopController::class, 'deliverIndex'])->name('shopDeliverGet');
-        Route::post('/deliver', [ShopController::class, 'deliver'])->name('shopDeliverPost');
+        Route::post('/deliver/store', [ShopController::class, 'deliverStore'])->name('shopDeliverPost');
 
         Route::get('/money', [ShopController::class, 'moneyIndex'])->name('shopMoneyGet');
         Route::post('/money', [ShopController::class, 'money'])->name('shopMoneyPost');

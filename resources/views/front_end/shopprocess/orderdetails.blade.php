@@ -169,11 +169,11 @@
                     </div>
                     {{-- 下一步 --}}
                     @if ($cart->count())
-                    <div class=" w-100 d-flex justify-content-end">
+                    <a href="{{route('shopDeliverGet')}}" class=" w-100 d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary align-self-end mt-2 p-2">
                             下一步
                         </button>
-                    </div>
+                    </ㄇ>
                     @endif
                 </ul>
             </div>

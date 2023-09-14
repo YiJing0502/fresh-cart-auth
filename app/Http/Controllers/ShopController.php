@@ -88,6 +88,9 @@ class ShopController extends Controller
     {
         return view('front_end.shopprocess.deliver');
     }
+    public function deliverStore (Request $request) {
+        dd($request->all());
+    }
 
     public function moneyIndex()
     {
