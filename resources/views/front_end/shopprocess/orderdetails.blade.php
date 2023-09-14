@@ -17,7 +17,8 @@
             background-repeat: no-repeat;
             background-size: contain;
         }
-                /* 加減按鈕設置 */
+
+        /* 加減按鈕設置 */
         .count-form-control {
             display: block;
             width: 100%;
@@ -126,7 +127,7 @@
                     <div class="w-100">
                         @foreach ($cart as $item)
                             {{-- @dump($item->product) --}}
-                            <li class="card  w-100 d-flex flex-row align-items-center" style="width: 18rem;">
+                            <li id="row{{$item->id}}" class="card  w-100 d-flex flex-row align-items-center" style="width: 18rem;">
                                 <img src="{{ $item->product->img_path }}" class="card-img-top w-25" alt="...">
                                 <div class="card-body d-flex flex-row flex-wrap">
                                     <div>
@@ -145,7 +146,9 @@
                                         <button type="button" class="btn h-100 btn-count"
                                             onclick="plus({{ $item->id }})">+</button>
                                         {{-- 輸入匡 --}}
-                                        <input id="product{{ $item->id }}" class="count-form-control" type="number" onchange="inputQty({{ $item->id }})" placeholder="商品數量" value="{{$item->desire_qty}}">
+                                        <input id="product{{ $item->id }}" class="count-form-control" type="number"
+                                            onchange="inputQty({{ $item->id }})" placeholder="商品數量"
+                                            value="{{ $item->desire_qty }}">
                                         {{-- minus 減 --}}
                                         <button type="button" class="btn btn-count"
                                             onclick="minus({{ $item->id }})">-</button>
@@ -153,8 +156,11 @@
                                 </div>
                                 <div class="me-5">
                                     <span>$</span>
-                                    <span class="price{{$item->id}}">{{$item->product->price * $item->desire_qty}}</span>
+                                    <span
+                                        class="price{{ $item->id }}">{{ $item->product->price * $item->desire_qty }}</span>
                                 </div>
+                                <button type="button" class="btn btn-danger"
+                                    onclick="deleteItem({{ $item->id }})">刪除</button>
                             </li>
                         @endforeach
                         {{-- 總金額 --}}
@@ -162,17 +168,17 @@
                             <div class="p-2">subtotal</div>
                             <div class="p-2">
                                 <span>$</span>
-                                <span class="myTotal">{{$total}}</span>
+                                <span class="myTotal">{{ $total }}</span>
                             </div>
                         </div>
                     </div>
                     {{-- 下一步 --}}
                     @if ($cart->count())
-                    <a href="{{route('shopDeliverGet')}}" class=" w-100 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary align-self-end mt-2 p-2">
-                            下一步
-                        </button>
-                    </ㄇ>
+                        <a href="{{ route('shopDeliverGet') }}" class=" w-100 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary align-self-end mt-2 p-2">
+                                下一步
+                            </button>
+                        </a>
                     @endif
                 </ul>
             </div>
@@ -184,7 +190,6 @@
     <script>
         // 增加功能
         function plus(id) {
-
             const input = document.querySelector(`input#product${id}`);
             let inputNum = parseInt(input.value);
             console.dir(input.value);
@@ -225,6 +230,61 @@
             const input = document.querySelector(`input#product${id}`);
             fetchQty(id, input.value);
         }
+        // 刪除商品
+        function deleteItem(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: '確定要刪除嗎？',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '對，刪除',
+                cancelButtonText: '不，取消',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const formData = new FormData();
+                    formData.append('_token', '{{ csrf_token()}}');
+                    formData.append('_method', 'DELETE');
+                    formData.append('cart_id', id);
+                    fetch('{{route('order.add.cart.delete')}}', {
+                        method: 'POST',
+                        body: formData,
+                    }).then((res)=> {
+                        return res.json();
+                        // 用json轉譯傳來的物件
+                    }).then((data)=> {
+                        console.log(data);
+                        if (data.code === 1 ) {
+                            const row = document.querySelector(`li#row${id}`);
+                            const myTotal = document.querySelector('.myTotal')
+                            console.log(row);
+                            row.remove();
+                            myTotal.textContent = data.total;
+                        }
+                    })
+                    swalWithBootstrapButtons.fire(
+                        '刪除了!',
+
+                    )
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        '取消了！',
+
+                    )
+                }
+            })
+        }
         // 增加購物車
         // id => cart_id ,qty => 商品數量
         function fetchQty(id, qty) {
@@ -259,4 +319,5 @@
             })
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection

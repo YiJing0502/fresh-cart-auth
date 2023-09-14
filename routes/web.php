@@ -77,12 +77,14 @@ Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
         Route::get('/edit/{id}', [ReplyController::class, 'edit'])->name('replyEdit');
         Route::put('/update/{id}', [ReplyController::class, 'update'])->name('replyUpdate');
     });
-    // 前台＿o將產品加入購物車/o購物車頁更新產品數量/x客戶訂單區塊
+    // 前台＿o將產品加入購物車/o購物車頁更新產品數量/o 購物車頁刪除產品/x客戶訂單區塊
     Route::prefix('/order')->group(function () {
         // 將產品加入購物車
         Route::post('/add/cart', [OrderController::class, 'add_cart'])->name('order.add.cart');
         // 購物車頁更新產品數量
         Route::put('/add/cart/update', [ShopController::class, 'add_cart_update'])->name('order.add.cart.update');
+        // 購物車頁刪除產品
+        Route::delete('/add/cart/delete', [ShopController::class, 'add_cart_delete'])->name('order.add.cart.delete');
         // 購物車下訂單的四頁
         Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
         Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
@@ -97,7 +99,7 @@ Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
         Route::post('/deliver/store', [ShopController::class, 'deliverStore'])->name('shopDeliverPost');
 
         Route::get('/money', [ShopController::class, 'moneyIndex'])->name('shopMoneyGet');
-        Route::post('/money', [ShopController::class, 'money'])->name('shopMoneyPost');
+        Route::post('/money/store', [ShopController::class, 'moneyStore'])->name('shopMoneyStore');
 
         Route::get('/thx', [ShopController::class, 'thxIndex'])->name('shopThxGet');
         Route::post('/thx', [ShopController::class, 'thx'])->name('shopThxPost');

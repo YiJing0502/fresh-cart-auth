@@ -73,6 +73,30 @@ class ShopController extends Controller
         ];
 
     }
+    // 購物車頁刪除產品
+    public function add_cart_delete (Request $request) {
+        // 1.驗證
+        $request->validate([
+            'cart_id' =>'required|min:1|numeric|exists:carts,id',
+        ]);
+        // 2.測試是否可以通過驗證
+        // dd($request->cart_id);
+        // 3.從model找出資料並刪除
+        $cart = Cart::find($request->cart_id)->delete();
+        // 4.更新金額
+        $total = 0;
+        $cartTotal = Cart::where('user_id', $request->user()->id)->get();
+        foreach ($cartTotal as $value) {
+            $total += $value->product->price * $value->desire_qty;
+        }
+        // 回傳物件
+        return (object)[
+            'code' => $cart? 1 : 0,
+            // code $cart是否存在，存在為1，不存在為0
+            'id' => $request->cart_id,
+            'total' => $total,
+        ];
+    }
     public function orderDetailsIndex(Request $request)
     {
         $cart = Cart::where('user_id', $request->user()->id)->get();
@@ -106,7 +130,14 @@ class ShopController extends Controller
     {
         return view('front_end.shopprocess.money');
     }
-
+    public function moneyStore (Request $request) {
+        dd($request->all());
+        // 1.驗證
+        $request->validate([
+            'money_way' => 'required|numeric'
+        ]);
+        
+    }
     public function thxIndex()
     {
         return view('front_end.shopprocess.thx');

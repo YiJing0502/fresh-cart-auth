@@ -12,13 +12,13 @@
             </div>
             <p class=" mb-5">already have account? Click here to <a href="">Sign in</a> .</p>
         </div>
-        <form action="{{ route('shopThxPost') }}" method="POST">
+        <form action="{{ route('shopMoneyStore') }}" method="POST">
             @csrf
             <div class="mb-5 mt-4">付款資訊</div>
             <div class="d-flex flex-column">
                 <label>
                     <div class="border container d-flex align-items-start rounded p-3">
-                        <input name="money_way" type="radio" class="mr-3 mt-1">
+                        <input name="money_way" type="radio" class="mr-3 mt-1" value="1" required>
                         <ul class="ms-2 p-0">
                             <li class="fw-bold">臨櫃匯款</li>
                             <li name="shop_account">0000-123456789-123456</li>
@@ -32,7 +32,7 @@
                 </label>
                 <label>
                     <div class="border container d-flex align-items-start mt-3 rounded p-3">
-                        <input name="money_way" type="radio" class="mr-3 mt-1">
+                        <input name="money_way" type="radio" class="mr-3 mt-1" value="2">
                         <div class="ms-2">
                             <div class="fw-bold">線上匯款</div>
                             <div>本站線上付款為綠界金流</div>
