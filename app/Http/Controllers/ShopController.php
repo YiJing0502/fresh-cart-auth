@@ -43,10 +43,20 @@ class ShopController extends Controller
             'product_id' => $request->product_id,
         ];
     }
+    // 購物車頁更新產品數量
+    public function add_cart_update (Request $request)
+    {
+        dd($request->all());
+    }
     public function orderDetailsIndex(Request $request)
     {
         $cart = Cart::where('user_id', $request->user()->id)->get();
-        return view('front_end.shopprocess.orderdetails', compact('cart'));
+        // 計算總金額邏輯
+        $total = 0;
+        foreach ($cart as $value) {
+            $total += $value->product->price * $value->desire_qty;
+        }
+        return view('front_end.shopprocess.orderdetails', compact('cart', 'total'));
     }
 
     public function deliverIndex()

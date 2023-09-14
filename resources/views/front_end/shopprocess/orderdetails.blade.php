@@ -110,7 +110,7 @@
 @endsection
 
 @section('main-content')
-    @dump($cart)
+    {{-- @dump($cart) --}}
     <div class="order-list d-flex flex-column">
         <div class="container">
             <div class="w-100 bg-light ">
@@ -125,7 +125,7 @@
                     <div class="border-bottom p-2">Order details</div>
                     <div class="w-100">
                         @foreach ($cart as $item)
-                            @dump($item->product)
+                            {{-- @dump($item->product) --}}
                             <li class="card  w-100 d-flex flex-row align-items-center" style="width: 18rem;">
                                 <img src="{{ $item->product->img_path }}" class="card-img-top w-25" alt="...">
                                 <div class="card-body d-flex flex-row flex-wrap">
@@ -161,7 +161,10 @@
                         {{-- 總金額 --}}
                         <div class="w-100 d-flex flex-row justify-content-between border-bottom">
                             <div class="p-2">subtotal</div>
-                            <div class="p-2">$30</div>
+                            <div class="p-2">
+                                <span>$</span>
+                                <span>{{$total}}</span>
+                            </div>
                         </div>
                     </div>
                     {{-- 下一步 --}}
@@ -172,6 +175,7 @@
                     </div>
                 </ul>
             </div>
+            {{-- <input id="oderAddCart" value="{{ route('order.add.cart.update') }}"> --}}
         </div>
     </div>
 @endsection
@@ -179,6 +183,7 @@
     <script>
         // 增加功能
         function plus(id) {
+
             const input = document.querySelector(`input#product${id}`);
             let inputNum = parseInt(input.value);
             console.dir(input.value);
@@ -190,9 +195,11 @@
                 inputNum = Math.max(inputNum + 1, 1);
                 // 計算完後賦值
                 input.value = inputNum.toString();
+                fetchQty(id, input.value);
             } else {
                 console.log('fail');
             }
+
         }
         // 減少功能
         function minus(id) {
@@ -207,9 +214,40 @@
                 inputNum = Math.max(inputNum - 1, 1);
                 // 計算完後賦值
                 input.value = inputNum.toString();
+                fetchQty(id, input.value);
             } else {
                 console.log('fail');
             }
+        }
+        // 增加購物車
+        // id => cart_id ,qty => 商品數量
+        function fetchQty(id, qty) {
+            console.log(123);
+            const input = document.querySelector(`input#product${id}`);
+            const formData = new FormData();
+            // const oderAddCart = document.querySelector(`input#oderAddCart`).value;
+
+            // 送出給購物車表單
+            formData.append('_token', '{{ csrf_token() }}');
+            formData.append('_method', 'PUT');
+            // 產品id
+            formData.append('product_id', id);
+            // 數量
+            formData.append('desire_qty', input.value);
+            // console.log(oderAddCart);
+            fetch('{{ route('order.add.cart.update') }}', {
+                method: 'POST',
+                body: formData,
+            });
+            // .then((response) => {
+            //     return response.json();
+            // }).then((data) => {
+            //     console.log(data);
+            //     if (data.code === 1) {
+            //         console.log('成功');
+            //         Swal.fire('成功加入購物車');
+            //     }
+            // })
         }
     </script>
 @endsection

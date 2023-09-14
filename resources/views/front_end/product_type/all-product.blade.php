@@ -211,7 +211,7 @@
                 console.log('fail');
             }
         }
-
+        // 增加購物車
         function addCart(id) {
             console.log(123);
             const input = document.querySelector(`input#product${id}`);

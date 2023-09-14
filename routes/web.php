@@ -81,6 +81,8 @@ Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
     Route::prefix('/order')->group(function () {
         // 將產品加入購物車
         Route::post('/add/cart', [OrderController::class, 'add_cart'])->name('order.add.cart');
+        // 購物車頁更新產品數量
+        Route::put('/add/cart/update', [OrderController::class, 'add_cart_update'])->name('order.add.cart.update');
         // 購物車下訂單的四頁
         Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
         Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');
