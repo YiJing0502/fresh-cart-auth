@@ -154,7 +154,7 @@
                                 </div>
                                 <div class="me-5">
                                     <span>$</span>
-                                    <span>{{$item->product->price * $item->desire_qty}}</span>
+                                    <span class="price{{$item->id}}">{{$item->product->price * $item->desire_qty}}</span>
                                 </div>
                             </li>
                         @endforeach
@@ -163,16 +163,18 @@
                             <div class="p-2">subtotal</div>
                             <div class="p-2">
                                 <span>$</span>
-                                <span>{{$total}}</span>
+                                <span class="myTotal">{{$total}}</span>
                             </div>
                         </div>
                     </div>
                     {{-- 下一步 --}}
+                    @if ($cart->count())
                     <div class=" w-100 d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary align-self-end mt-2 p-2">
                             下一步
                         </button>
                     </div>
+                    @endif
                 </ul>
             </div>
             {{-- <input id="oderAddCart" value="{{ route('order.add.cart.update') }}"> --}}
@@ -238,16 +240,19 @@
             fetch('{{ route('order.add.cart.update') }}', {
                 method: 'POST',
                 body: formData,
-            });
-            // .then((response) => {
-            //     return response.json();
-            // }).then((data) => {
-            //     console.log(data);
-            //     if (data.code === 1) {
-            //         console.log('成功');
-            //         Swal.fire('成功加入購物車');
-            //     }
-            // })
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                console.log(data);
+                const myPrice = document.querySelector(`.price${id}`);
+                const myTotal = document.querySelector('.myTotal');
+                myPrice.textContent = data.price;
+                myTotal.textContent = data.total;
+                // if (data.code === 1) {
+                //     console.log('成功');
+                //     Swal.fire('成功加入購物車');
+                // }
+            })
         }
     </script>
 @endsection

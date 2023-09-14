@@ -46,7 +46,32 @@ class ShopController extends Controller
     // 購物車頁更新產品數量
     public function add_cart_update (Request $request)
     {
-        dd($request->all());
+        $request->validate([
+            'product_id' => 'required|min:1|numeric|exists:products,id',
+            'desire_qty' => 'required|numeric',
+        ]);
+        // dd($request->desire_qty);
+
+        $cart = Cart::find($request->product_id);
+        $updateCart = $cart->update([
+            'desire_qty' => $request->desire_qty,
+        ]);
+        // 重新計算總金額
+        $cartTotal = Cart::where('user_id', $request->user()->id)->get();
+        // 計算總金額邏輯
+        $total = 0;
+        foreach ($cartTotal as $value) {
+            $total += $value->product->price * $value->desire_qty;
+        }
+
+        return (object)[
+            // 判斷是否存在true=1,false=0
+            'code' => $updateCart ? 1 : 0,
+            'price' => ($cart->product?->price ?? 0) * $cart->desire_qty,
+            'product_id' => $request->product_id,
+            'total' => $total,
+        ];
+
     }
     public function orderDetailsIndex(Request $request)
     {
