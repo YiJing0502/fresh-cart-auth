@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\OrderCreated;
 use App\Models\Cart;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 
 class OrderController extends Controller
@@ -61,10 +59,8 @@ class OrderController extends Controller
     {
         return view('front_end.cart_order.order_thanks');
     }
-    public function thanks_store(Request $request) {
+    public function thanks_store() {
 
-        $orderData = $request->all();
-        Mail::to('w71080635@gmail.com')->send(new OrderCreated($orderData));
 
     }
 

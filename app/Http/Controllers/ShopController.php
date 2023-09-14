@@ -7,6 +7,9 @@ use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderCreated;
+
 
 class ShopController extends Controller
 {
@@ -157,7 +160,7 @@ class ShopController extends Controller
             $total += $value->product->price * $value->desire_qty;
         }
         // 4.建立訂單
-        Order::create([
+        $order = Order::create([
             'user_id' => $request->user()->id,
             'order_number'=> $orderNumber,
             'order_date' => session()->get('order_date'),
@@ -182,10 +185,28 @@ class ShopController extends Controller
         foreach ($cart as $value) {
             $value->delete();
         }
+        // 寄信
+        $orderData = [
+            'user_name' => $request->user()->name,
+            'order_number' => $order->order_number,
+            'order_date' => $order->order_date,
+            'order_name' => $order->order_name,
+            'order_address' => $order->order_address,
+            'order_phone' => $order->order_phone,
+            'order_desc' => $order->order_desc,
+            'order_total' => $order->order_total,
+            'pay_way' => $order->pay_way,
+            'order_status' => $order->order_status,
+            'payment_status' => $order->payment_status,
+            'delivery_status' => $order->delivery_status,
+
+        ];
+        Mail::to('w71080635@gmail.com')->send(new OrderCreated($orderData));
         return redirect(route('shopThxGet'));
     }
-    public function thxIndex()
+    public function thxIndex(Request $request)
     {
+
         return view('front_end.shopprocess.thx');
     }
 }
