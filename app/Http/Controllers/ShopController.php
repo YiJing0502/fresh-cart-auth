@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cart;
-
+use App\Models\Order;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ShopController extends Controller
 {
@@ -131,12 +133,56 @@ class ShopController extends Controller
         return view('front_end.shopprocess.money');
     }
     public function moneyStore (Request $request) {
-        dd($request->all());
         // 1.驗證
         $request->validate([
             'money_way' => 'required|numeric'
         ]);
-        
+        // 2.建立訂單編號
+        // 隨機的兩個英文字母
+        $randomChars = Str::random(2);
+        // 年月日
+        $yearMonthDay = Carbon::now()->format('Ymd');
+        // 今日第幾筆訂單（假設你已經有了一個計數器）
+        $orderCount = 1;  // 這個數字應該根據實際情況更動
+        // 將訂單計數器格式化為四位數，例如：0001
+        $orderCountStr = str_pad($orderCount, 4, '0', STR_PAD_LEFT);
+        // 隨機的三個數字
+        $randomNumbers = Str::random(3);
+        // 最終的訂單編號
+        $orderNumber = $randomChars . $yearMonthDay . $orderCountStr . $randomNumbers;
+        // 3.更新金額
+        $total = 0;
+        $cartTotal = Cart::where('user_id', $request->user()->id)->get();
+        foreach ($cartTotal as $value) {
+            $total += $value->product->price * $value->desire_qty;
+        }
+        // 4.建立訂單
+        Order::create([
+            'user_id' => $request->user()->id,
+            'order_number'=> $orderNumber,
+            'order_date' => session()->get('order_date'),
+            'order_name' => session()->get('order_name'),
+            'order_address' => session()->get('order_address'),
+            'order_phone' => session()->get('order_phone'),
+            'order_desc' => session()->get('order_desc'),
+            'order_total' => $total,
+            'pay_way' => $request->money_way,
+            'order_status' => 1,
+            'payment_status' => 1,
+            'delivery_status' => 1,
+        ]);
+        // 清除session
+        $request->session()->forget('order_name');
+        $request->session()->forget('order_address');
+        $request->session()->forget('order_date');
+        $request->session()->forget('order_phone');
+        $request->session()->forget('order_desc');
+        // 清除購物車
+        $cart = Cart::where('user_id', $request->user()->id)->get();
+        foreach ($cart as $value) {
+            $value->delete();
+        }
+        return redirect(route('shopThxGet'));
     }
     public function thxIndex()
     {

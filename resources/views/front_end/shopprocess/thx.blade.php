@@ -19,10 +19,10 @@
                 <div class=" content-thx d-flex flex-column justify-content-center align-items-center">
                     感謝您的購買==
                     <div class="mt-5 ">
-                        <a href="">
+                        <a href="/">
                             <button type="button" class="btn btn-primary m-5">回首頁</button>
                         </a>
-                        <a href="{{ route('shopOrderdetailsGet') }}">
+                        <a href="">
                             <button type="button" class="btn btn-primary m-5">查看訂單</button>
                         </a>
                     </div>
