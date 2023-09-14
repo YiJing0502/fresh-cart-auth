@@ -145,8 +145,7 @@
                                         <button type="button" class="btn h-100 btn-count"
                                             onclick="plus({{ $item->id }})">+</button>
                                         {{-- 輸入匡 --}}
-                                        <input id="product{{ $item->id }}" class="count-form-control" type="number"
-                                            placeholder="商品數量" value="{{$item->desire_qty}}">
+                                        <input id="product{{ $item->id }}" class="count-form-control" type="number" onchange="inputQty({{ $item->id }})" placeholder="商品數量" value="{{$item->desire_qty}}">
                                         {{-- minus 減 --}}
                                         <button type="button" class="btn btn-count"
                                             onclick="minus({{ $item->id }})">-</button>
@@ -220,6 +219,11 @@
             } else {
                 console.log('fail');
             }
+        }
+        // 當input手動輸入改變數值時，可以即時更新
+        function inputQty(id) {
+            const input = document.querySelector(`input#product${id}`);
+            fetchQty(id, input.value);
         }
         // 增加購物車
         // id => cart_id ,qty => 商品數量
