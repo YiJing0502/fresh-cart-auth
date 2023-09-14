@@ -18,10 +18,10 @@
             <div class="container border p-4 mb-4">
                 <div class="container d-flex flex-column p-0 m-0">
                     <input class="w-100 mb-3" type="text" placeholder="收件者姓名" name="order_name">
-                    <input class="w-100 mb-3" type="text" placeholder="收件者地址" name="order_address>
-                    <input class="w-100 mb-3" type="date" name="order_date>
-                    <input class="w-100 mb-3" type="tel" placeholder="收貨者連絡電話" name="order_phone>
-                    <input class="w-100" type="text" placeholder="備註" name="order_desc>
+                    <input class="w-100 mb-3" type="text" placeholder="收件者地址" name="order_address">
+                    <input class="w-100 mb-3" type="date" name="order_date">
+                    <input class="w-100 mb-3" type="tel" placeholder="收貨者連絡電話" name="order_phone">
+                    <input class="w-100" type="text" placeholder="備註" name="order_desc">
                 </div>
             </div>
             <div class="d-flex justify-content-between">
