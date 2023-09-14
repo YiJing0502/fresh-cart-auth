@@ -87,8 +87,8 @@ class ShopController extends Controller
     public function deliverIndex()
     {
         $rememberInfo = session()->all();
-        dump($rememberInfo);
-        dump($rememberInfo['order_name']);
+        // dump($rememberInfo);
+        // dump($rememberInfo['order_name']);
         return view('front_end.shopprocess.deliver', compact('rememberInfo'));
     }
     public function deliverStore (Request $request) {
@@ -99,6 +99,7 @@ class ShopController extends Controller
         $request->session()->put('order_date', $request->order_date);
         $request->session()->put('order_phone', $request->order_phone);
         $request->session()->put('order_desc', $request->order_desc);
+        return redirect()->route('shopMoneyGet');
     }
 
     public function moneyIndex()

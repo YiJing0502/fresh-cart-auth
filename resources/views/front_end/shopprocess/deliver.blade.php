@@ -17,11 +17,11 @@
             <div class="mb-5 mt-4">配送資訊</div>
             <div class="container border p-4 mb-4">
                 <div class="container d-flex flex-column p-0 m-0">
-                    <input class="w-100 mb-3" type="text" placeholder="收件者姓名" name="order_name" value="{{old('order_name', $rememberInfo['order_name'])}}">
-                    <input class="w-100 mb-3" type="text" placeholder="收件者地址" name="order_address" value="{{old('order_address', $rememberInfo['order_address'])}}">
-                    <input class="w-100 mb-3" type="date" name="order_date" value="{{old('order_date', $rememberInfo['order_date'])}}">
-                    <input class="w-100 mb-3" type="tel" placeholder="收貨者連絡電話" name="order_phone" value="{{old('order_phone', $rememberInfo['order_phone'])}}">
-                    <input class="w-100" type="text" placeholder="備註" name="order_desc" value="{{old('order_desc', $rememberInfo['order_desc'])}}">
+                    <input class="w-100 mb-3" type="text" placeholder="收件者姓名" name="order_name" value="{{old('order_name', $rememberInfo['order_name'] ?? '')}}">
+                    <input class="w-100 mb-3" type="text" placeholder="收件者地址" name="order_address" value="{{old('order_address', $rememberInfo['order_address'] ?? '')}}">
+                    <input class="w-100 mb-3" type="date" name="order_date" value="{{old('order_date', $rememberInfo['order_date'] ?? '')}}">
+                    <input class="w-100 mb-3" type="tel" placeholder="收貨者連絡電話" name="order_phone" value="{{old('order_phone', $rememberInfo['order_phone'] ?? '')}}">
+                    <input class="w-100" type="text" placeholder="備註" name="order_desc" value="{{old('order_desc', $rememberInfo['order_desc'] ?? '')}}">
                 </div>
             </div>
             <div class="d-flex justify-content-between">
