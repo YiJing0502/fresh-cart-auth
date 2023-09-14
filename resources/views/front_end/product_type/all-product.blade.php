@@ -154,7 +154,7 @@
                                 <div>
                                     <span class="fs-6">${{ $item->price }}</span>
                                 </div>
-                                @if (Auth::check())
+                                 @if (Auth::check())
                                     <button type="button" class="btn btn-primary ms-auto btn-add"
                                         onclick="addCart({{ $item->id }})">
                                         <i class="bi bi-plus-lg me-1"></i>
