@@ -48,4 +48,9 @@ class User extends Authenticatable
     public function cart() {
         return $this->hasMany(Cart::class, 'user_id', 'id');
     }
+    // 關聯 訂單：一對多
+    public function order()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
+    }
 }
