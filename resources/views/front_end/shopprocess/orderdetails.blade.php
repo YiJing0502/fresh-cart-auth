@@ -146,14 +146,15 @@
                                             onclick="plus({{ $item->id }})">+</button>
                                         {{-- 輸入匡 --}}
                                         <input id="product{{ $item->id }}" class="count-form-control" type="number"
-                                            placeholder="商品數量" value="1">
+                                            placeholder="商品數量" value="{{$item->desire_qty}}">
                                         {{-- minus 減 --}}
                                         <button type="button" class="btn btn-count"
                                             onclick="minus({{ $item->id }})">-</button>
                                     </div>
                                 </div>
                                 <div class="me-5">
-                                    $15
+                                    <span>$</span>
+                                    <span>{{$item->product->price * $item->desire_qty}}</span>
                                 </div>
                             </li>
                         @endforeach
