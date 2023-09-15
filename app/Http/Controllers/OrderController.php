@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 
@@ -43,9 +44,12 @@ class OrderController extends Controller
         ];
     }
     // o 會員查看訂單
-    public function list_show_Index ()
+    public function list_show_Index (Request $request)
     {
-        return view('front_end.my_order.orderListShow');
+        $user = $request->user();
+        // 取得自己的單，並傳送到頁面上
+        $orders = Order::where('user_id', $user->id)->get();
+        return view('front_end.my_order.orderListShow', compact('orders'));
     }
     // 購物車下訂單的四頁
     public function list_index()

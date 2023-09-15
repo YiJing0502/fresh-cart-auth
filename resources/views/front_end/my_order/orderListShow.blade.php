@@ -5,62 +5,136 @@
     <div class="container">
         <h3>我的訂單資訊</h3>
         <div class="accordion" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                        aria-controls="panelsStayOpen-collapseOne">
-                        Accordion Item #1
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-                    <div class="accordion-body">
-                        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse
-                        plugin adds the appropriate classes that we use to style each element. These classes control the
-                        overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of
-                        this with custom CSS or overriding our default variables. It's also worth noting that just about any
-                        HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            @foreach ($orders as $item)
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapse{{ $item->id }}" aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapse{{ $item->id }}">
+                            訂單成立日：{{ $item->created_at->format('Y-m-d') }}
+                            ｜訂單排序：{{ $item->id }}
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapse{{ $item->id }}" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            {{-- 訂單狀態資訊 --}}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">訂單編號：</th>
+                                        <th scope="col">付款方式：</th>
+                                        <th scope="col">訂單狀態：</th>
+                                        <th scope="col">付款狀態：</th>
+                                        <th scope="col">運送狀態：</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">＠</th>
+                                        {{-- 訂單編號 --}}
+                                        <td>{{ $item->order_number }}</td>
+                                        {{-- 付款方式 --}}
+                                        <td>
+                                            @if ($item->pay_way == 1)
+                                                臨櫃繳款
+                                            @elseif ($item->pay_way == 2)
+                                                綠界線上匯款
+                                            @else
+                                                未知支付方式
+                                            @endif
+                                        </td>
+                                        {{-- 訂單狀態 --}}
+                                        <td>
+                                            @if ($item->order_status == 1)
+                                                處理中
+                                            @elseif ($item->order_status == 2)
+                                                已確認
+                                            @elseif ($item->order_status == 3)
+                                                已完成
+                                            @elseif ($item->order_status == 4)
+                                                已取消
+                                            @else
+                                                未知狀態
+                                            @endif
+                                        </td>
+                                        {{-- 付款狀態 --}}
+                                        <td>
+                                            @if ($item->payment_status == 1)
+                                                未付款
+                                            @elseif ($item->payment_status == 2)
+                                                付款失敗
+                                            @elseif ($item->payment_status == 3)
+                                                超過付款時間
+                                            @elseif ($item->payment_status == 4)
+                                                已付款
+                                            @elseif ($item->payment_status == 5)
+                                                退款中
+                                            @elseif ($item->payment_status == 6)
+                                                已退款
+                                            @else
+                                                未知狀態
+                                            @endif
+                                        </td>
+                                        {{-- 運送狀態 --}}
+                                        <td>
+                                            @if ($item->delivery_status == 1)
+                                                備貨中
+                                            @elseif ($item->delivery_status == 2)
+                                                發貨中
+                                            @elseif ($item->delivery_status == 3)
+                                                已發貨
+                                            @elseif ($item->delivery_status == 4)
+                                                已到達
+                                            @elseif ($item->delivery_status == 5)
+                                                已取貨
+                                            @elseif ($item->delivery_status == 6)
+                                                退貨中
+                                            @elseif ($item->delivery_status == 7)
+                                                退貨中
+                                            @else
+                                                已退貨
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            {{-- 訂單狀態資訊 --}}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">運送日期：</th>
+                                        <th scope="col">收件人：</th>
+                                        <th scope="col">收件地址：</th>
+                                        <th scope="col">聯絡電話：</th>
+                                        <th scope="col">備註：</th>
+                                        <th scope="col">總金額：</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">＠</th>
+                                        {{-- 運送日期 --}}
+                                        <td>{{ $item->order_date }}</td>
+                                        {{-- 收件人 --}}
+                                        <td>{{ $item->order_name }}</td>
+                                        {{-- 收件地址 --}}
+                                        <td>{{ $item->order_address }}</td>
+                                        {{-- 聯絡電話 --}}
+                                        <td>{{ $item->order_phone }}</td>
+                                        {{-- 備註 --}}
+                                        <td>{{ $item->order_desc }}</td>
+                                        {{-- 總金額 --}}
+                                        <td>${{ $item->order_total }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseTwo">
-                        Accordion Item #2
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the
-                        collapse plugin adds the appropriate classes that we use to style each element. These classes
-                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-                        modify any of this with custom CSS or overriding our default variables. It's also worth noting that
-                        just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit
-                        overflow.
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseThree">
-                        Accordion Item #3
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the
-                        collapse plugin adds the appropriate classes that we use to style each element. These classes
-                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-                        modify any of this with custom CSS or overriding our default variables. It's also worth noting that
-                        just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit
-                        overflow.
-                    </div>
-                </div>
-            </div>
+            @endforeach
+
         </div>
     </div>
 @endsection
