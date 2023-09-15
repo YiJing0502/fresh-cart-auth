@@ -48,7 +48,7 @@ class OrderController extends Controller
     {
         $user = $request->user();
         // 取得自己的單，並傳送到頁面上
-        $orders = Order::where('user_id', $user->id)->get();
+        $orders = Order::where('user_id', $user->id)->orderBy('id', 'desc')->get();
         return view('front_end.my_order.orderListShow', compact('orders'));
     }
     // 購物車下訂單的四頁

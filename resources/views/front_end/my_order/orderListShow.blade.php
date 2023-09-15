@@ -130,6 +130,41 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            {{-- 查看更多 --}}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">查看訂單產品資訊：</th>
+                                        <th scope="col">前往繳費：</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">＠</th>
+                                        {{--  --}}
+                                        <td>
+                                            <button type="button" class="btn btn-outline-success btn-sm">訂單產品資訊</button>
+                                        </td>
+                                        {{--  --}}
+                                        <td>
+                                            <button type="button" class="btn btn-outline-success btn-sm">繳費</button>
+                                        </td>
+                                        {{--  --}}
+                                        <td></td>
+                                        {{--  --}}
+                                        <td></td>
+                                        {{--  --}}
+                                        <td></td>
+                                        {{--  --}}
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
