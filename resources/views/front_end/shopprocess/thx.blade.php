@@ -22,7 +22,7 @@
                         <a href="/">
                             <button type="button" class="btn btn-primary m-5">回首頁</button>
                         </a>
-                        <a href="">
+                        <a href="{{route('order.list.show.index')}}">
                             <button type="button" class="btn btn-primary m-5">查看訂單</button>
                         </a>
                     </div>
