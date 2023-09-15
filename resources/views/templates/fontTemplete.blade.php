@@ -81,7 +81,7 @@
                     @endguest
 
                     <a href="#" class="position-relative d-none d-lg-block ">
-                        <i class="bi bi-heart top-icon"></i>
+                        <i class="bi bi-card-list top-icon"></i>
                         <span class="position-absolute badge badge-circle text-bg-success rounded-circle">5</span>
                     </a>
                     @if (Auth::check())

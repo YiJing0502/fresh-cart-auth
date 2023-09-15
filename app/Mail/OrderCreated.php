@@ -16,10 +16,13 @@ class OrderCreated extends Mailable
     /**
      * Create a new message instance.
      */
-    protected $order;
-    public function __construct()
+    // 解構從shopController的$orderData丟進來，用$data代表
+    // 宣告一個變數 $myData，帶值給它，這樣在這裡其他變數都可以使用$myData
+    public $myData;
+    public function __construct($data)
     {
         //
+        $this->myData = $data;
     }
 
     /**
@@ -28,7 +31,7 @@ class OrderCreated extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Order Created',
+            subject: 'Order Created：訂單成立',
         );
     }
 
@@ -38,7 +41,7 @@ class OrderCreated extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'mails.orderCreate',
         );
     }
 

@@ -186,6 +186,64 @@ class ShopController extends Controller
             $value->delete();
         }
         // 寄信
+        // 付款方式
+        $pay = '';
+        if ($request->money_way == 1) {
+            $pay = '臨櫃繳款';
+        } else if ($request->money_way == 2) {
+            $pay = '綠界線上匯款';
+        } else {
+            $pay = '未知支付方式';
+        }
+        // 訂單狀態
+        $order_status = '';
+        if ($order->order_status == 1) {
+            $order_status = '處理中';
+        } else if ($order->order_status == 2) {
+            $order_status = '已確認';
+        } else if ($order->order_status == 3) {
+            $order_status = '已完成';
+        } else if ($order->order_status == 4) {
+            $order_status = '已取消';
+        } else {
+            $order_status = '未知狀態';
+        }
+        // 付款狀態
+        $payment_status = '';
+        if ($order->payment_status == 1) {
+            $payment_status = '未付款';
+        } else if ($order->payment_status == 2) {
+            $payment_status = '付款失敗';
+        } else if ($order->payment_status == 3) {
+            $payment_status = '超過付款時間';
+        } else if ($order->payment_status == 4) {
+            $payment_status = '已付款';
+        } else if ($order->payment_status == 5) {
+            $payment_status = '退款中';
+        } else if ($order->payment_status == 6) {
+            $payment_status = '已退款';
+        } else {
+            $payment_status = '未知狀態';
+        }
+        // 送貨狀態
+        $delivery_status = '';
+        if ($order->order_status == 1) {
+            $delivery_status = '備貨中';
+        } else if ($order->delivery_status == 2) {
+            $delivery_status = '發貨中';
+        } else if ($order->delivery_status == 3) {
+            $delivery_status = '已發貨';
+        } else if ($order->delivery_status == 4) {
+            $delivery_status = '已到達';
+        } else if ($order->delivery_status == 5) {
+            $delivery_status = '已取貨';
+        } else if ($order->delivery_status == 6) {
+            $delivery_status = '退貨中';
+        } else if ($order->delivery_status == 7) {
+            $delivery_status = '已退貨';
+        } else {
+            $delivery_status = '未知狀態';
+        }
         $orderData = [
             'user_name' => $request->user()->name,
             'order_number' => $order->order_number,
@@ -195,12 +253,13 @@ class ShopController extends Controller
             'order_phone' => $order->order_phone,
             'order_desc' => $order->order_desc,
             'order_total' => $order->order_total,
-            'pay_way' => $order->pay_way,
-            'order_status' => $order->order_status,
-            'payment_status' => $order->payment_status,
-            'delivery_status' => $order->delivery_status,
+            'pay_way' => $pay,
+            'order_status' => $order_status,
+            'payment_status' => $payment_status,
+            'delivery_status' => $delivery_status,
 
         ];
+        // Mail::to($request->user()->email)->send(new OrderCreated($orderData));
         Mail::to('w71080635@gmail.com')->send(new OrderCreated($orderData));
         return redirect(route('shopThxGet'));
     }
