@@ -80,7 +80,7 @@
                         <a href="{{ route('login') }}">點我登入</a>
                     @endguest
 
-                    <a href="#" class="position-relative d-none d-lg-block ">
+                    <a href="{{route('order.list.show.index')}}" class="position-relative d-none d-lg-block ">
                         <i class="bi bi-card-list top-icon"></i>
                         <span class="position-absolute badge badge-circle text-bg-success rounded-circle">5</span>
                     </a>

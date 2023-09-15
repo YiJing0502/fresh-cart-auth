@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    // 將產品加入購物車
+    // o 將產品加入購物車
     public function add_cart(Request $request)
     {
 
@@ -41,6 +41,11 @@ class OrderController extends Controller
             'code' => $cart ? 1 : 0,
             'product_id' => $request->product_id,
         ];
+    }
+    // o 會員查看訂單
+    public function list_show_Index ()
+    {
+        return view('front_end.my_order.orderListShow');
     }
     // 購物車下訂單的四頁
     public function list_index()
