@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use Illuminate\Http\Request;
 
 
@@ -51,9 +52,14 @@ class OrderController extends Controller
         $orders = Order::where('user_id', $user->id)->orderBy('id', 'desc')->get();
         return view('front_end.my_order.orderListShow', compact('orders'));
     }
-    public function list_detail () {
-
-        
+    public function list_detail (Request $request, $orders_id) {
+        // dd($orders_id);
+        $user = $request->user();
+        // 找到「特定使用者」\以及「屬於他的訂單」
+        $order = Order::where('user_id', $user->id)->find($orders_id);
+        $order_products = OrderProduct::where('order_id', $order->id)->get();
+        // dd($order_products);
+        return view('front_end.my_order.orderListDetail', compact('order', 'order_products'));
 
     }
     // 購物車下訂單的四頁

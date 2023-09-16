@@ -19,4 +19,10 @@ class Cart extends Model
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    // 關聯 user_id 多對一
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'user_id', 'id');
+    }
+
 }

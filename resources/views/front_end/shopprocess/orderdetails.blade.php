@@ -125,7 +125,7 @@
                 <ul class="border">
                     <div class="border-bottom p-2">Order details</div>
                     <div class="w-100">
-                        @foreach ($cart as $item)
+                        @foreach ($cartUser as $item)
                             {{-- @dump($item->product) --}}
                             <li id="row{{$item->id}}" class="card  w-100 d-flex flex-row align-items-center" style="width: 18rem;">
                                 <img src="{{ $item->product->img_path }}" class="card-img-top w-25" alt="...">
@@ -173,7 +173,7 @@
                         </div>
                     </div>
                     {{-- 下一步 --}}
-                    @if ($cart->count())
+                    @if ($cartUser->count())
                         <a href="{{ route('shopDeliverGet') }}" class=" w-100 d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary align-self-end mt-2 p-2">
                                 下一步

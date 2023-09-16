@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
@@ -56,16 +57,16 @@ class ShopController extends Controller
             'desire_qty' => 'required|numeric',
         ]);
         // dd($request->desire_qty);
-
+        // 找到購物車產品，更新數量
         $cart = Cart::find($request->product_id);
         $updateCart = $cart->update([
             'desire_qty' => $request->desire_qty,
         ]);
-        // 重新計算總金額
-        $cartTotal = Cart::where('user_id', $request->user()->id)->get();
-        // 計算總金額邏輯
+        //找到購物車屬於的使用者資料
+        $cartUser = Cart::where('user_id', $request->user()->id)->get();
+        // 重新計算總金額，計算總金額邏輯
         $total = 0;
-        foreach ($cartTotal as $value) {
+        foreach ($cartUser as $value) {
             $total += $value->product->price * $value->desire_qty;
         }
 
@@ -90,8 +91,11 @@ class ShopController extends Controller
         $cart = Cart::find($request->cart_id)->delete();
         // 4.更新金額
         $total = 0;
-        $cartTotal = Cart::where('user_id', $request->user()->id)->get();
-        foreach ($cartTotal as $value) {
+        //找到購物車屬於的使用者資料
+        $cartUser = Cart::where('user_id', $request->user()->id)->get();
+        // 重新計算總金額，計算總金額邏輯
+        $total = 0;
+        foreach ($cartUser as $value) {
             $total += $value->product->price * $value->desire_qty;
         }
         // 回傳物件
@@ -104,13 +108,14 @@ class ShopController extends Controller
     }
     public function orderDetailsIndex(Request $request)
     {
-        $cart = Cart::where('user_id', $request->user()->id)->get();
-        // 計算總金額邏輯
+        //找到購物車屬於的使用者資料
+        $cartUser = Cart::where('user_id', $request->user()->id)->get();
+        // 重新計算總金額，計算總金額邏輯
         $total = 0;
-        foreach ($cart as $value) {
+        foreach ($cartUser as $value) {
             $total += $value->product->price * $value->desire_qty;
         }
-        return view('front_end.shopprocess.orderdetails', compact('cart', 'total'));
+        return view('front_end.shopprocess.orderdetails', compact('cartUser', 'total'));
     }
 
     public function deliverIndex()
@@ -135,6 +140,7 @@ class ShopController extends Controller
     {
         return view('front_end.shopprocess.money');
     }
+    // 第三步，確認送出訂單
     public function moneyStore (Request $request) {
         // 1.驗證
         $request->validate([
@@ -146,19 +152,15 @@ class ShopController extends Controller
         // 年月日
         $yearMonthDay = Carbon::now()->format('Ymd');
         // 今日第幾筆訂單（假設你已經有了一個計數器）
-        $orderCount = 1;  // 這個數字應該根據實際情況更動
+        $orderNumber = 1;
+        $orderCount = $orderNumber += 1;  // 這個數字應該根據實際情況更動
         // 將訂單計數器格式化為四位數，例如：0001
         $orderCountStr = str_pad($orderCount, 4, '0', STR_PAD_LEFT);
         // 隨機的三個數字
         $randomNumbers = Str::random(3);
         // 最終的訂單編號
         $orderNumber = $randomChars . $yearMonthDay . $orderCountStr . $randomNumbers;
-        // 3.更新金額
-        $total = 0;
-        $cartTotal = Cart::where('user_id', $request->user()->id)->get();
-        foreach ($cartTotal as $value) {
-            $total += $value->product->price * $value->desire_qty;
-        }
+
         // 4.建立訂單
         $order = Order::create([
             'user_id' => $request->user()->id,
@@ -168,11 +170,40 @@ class ShopController extends Controller
             'order_address' => session()->get('order_address'),
             'order_phone' => session()->get('order_phone'),
             'order_desc' => session()->get('order_desc'),
-            'order_total' => $total,
             'pay_way' => $request->money_way,
             'order_status' => 1,
             'payment_status' => 1,
             'delivery_status' => 1,
+        ]);
+        // order_product_create
+        //找到購物車屬於的使用者資料
+        $cartUser = Cart::where('user_id', $request->user()->id)->get();
+        // 重新計算總金額，計算總金額邏輯
+        $total = 0;
+        foreach ($cartUser as $value) {
+            // 更新總金額
+            $total += $value->product->price * $value->desire_qty;
+            // 建立訂單產品資訊
+            // 從Car$value->找關聯product
+            OrderProduct::create([
+                // 'type_name' =>
+                'product_name' => $value->product->name,
+                'product_img' =>
+                $value->product->img_path,
+                'product_desc' =>
+                $value->product->descr,
+                'product_price' =>
+                $value->product->price,
+                'desire_qty' =>
+                $value->desire_qty,
+                'order_id' => $order->id,
+            ]);
+            // 清除購物車資料
+            $value->delete();
+        }
+        // 更新總金額在訂單的資料上
+        $order->update([
+            'order_total' => $total,
         ]);
         // 清除session
         $request->session()->forget('order_name');
@@ -180,13 +211,9 @@ class ShopController extends Controller
         $request->session()->forget('order_date');
         $request->session()->forget('order_phone');
         $request->session()->forget('order_desc');
-        // 清除購物車
-        $cart = Cart::where('user_id', $request->user()->id)->get();
-        foreach ($cart as $value) {
-            $value->delete();
-        }
-        // 寄信
-        // 付款方式
+
+        // 「建立訂單」信件：寄信
+        // 「建立訂單」信件：付款方式
         $pay = '';
         if ($request->money_way == 1) {
             $pay = '臨櫃繳款';
@@ -195,7 +222,7 @@ class ShopController extends Controller
         } else {
             $pay = '未知支付方式';
         }
-        // 訂單狀態
+        // 「建立訂單」信件：訂單狀態
         $order_status = '';
         if ($order->order_status == 1) {
             $order_status = '處理中';
@@ -208,7 +235,7 @@ class ShopController extends Controller
         } else {
             $order_status = '未知狀態';
         }
-        // 付款狀態
+        // 「建立訂單」信件：付款狀態
         $payment_status = '';
         if ($order->payment_status == 1) {
             $payment_status = '未付款';
@@ -225,7 +252,7 @@ class ShopController extends Controller
         } else {
             $payment_status = '未知狀態';
         }
-        // 送貨狀態
+        // 「建立訂單」信件：送貨狀態
         $delivery_status = '';
         if ($order->order_status == 1) {
             $delivery_status = '備貨中';
@@ -244,6 +271,7 @@ class ShopController extends Controller
         } else {
             $delivery_status = '未知狀態';
         }
+        // 傳送訂單資訊到「建立訂單」信件
         $orderData = [
             'user_name' => $request->user()->name,
             'order_number' => $order->order_number,
@@ -257,7 +285,6 @@ class ShopController extends Controller
             'order_status' => $order_status,
             'payment_status' => $payment_status,
             'delivery_status' => $delivery_status,
-
         ];
         // Mail::to($request->user()->email)->send(new OrderCreated($orderData));
         Mail::to('w71080635@gmail.com')->send(new OrderCreated($orderData));
