@@ -162,8 +162,11 @@
             </div>
             <h3>我的訂購產品資訊</h3>
             <div class="row row-cols-md-2 row-cols-xl-4 justify-content-between">
-                @foreach ($order_products as $productItem)
+                @foreach ($order_products as $key => $productItem)
                     <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="text-center">{{$key + 1}}</h5>
+                        </div>
                         <img src="{{$productItem->product_img}}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">產品名稱：{{$productItem->product_name}}</h5>
@@ -176,7 +179,6 @@
                         </ul>
                         <div class="card-body">
                             <a href="#" class="card-link">查看更多</a>
-
                         </div>
                     </div>
                 @endforeach
