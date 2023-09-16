@@ -148,7 +148,7 @@
                                         <th scope="row">＠</th>
                                         {{--  --}}
                                         <td>
-                                            <a href="{{route('order.list.detail', ['orders_id'=> $item->id])}}">
+                                            <a href="{{route('order.list.detail')}}">
                                                 <button type="button" class="btn btn-outline-success btn-sm">訂單產品資訊</button>
                                             </a>
                                         </td>

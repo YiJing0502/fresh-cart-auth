@@ -53,6 +53,8 @@ class OrderController extends Controller
     }
     public function list_detail () {
 
+        
+
     }
     // 購物車下訂單的四頁
     public function list_index()
