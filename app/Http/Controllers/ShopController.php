@@ -296,7 +296,7 @@ class ShopController extends Controller
     }
     // >>>綠界金流
     public function ecPaymentIndex() {
-
+        return view('front_end.shopprocess.ecPaymentIndex');
     }
     public function thxIndex(Request $request)
     {
