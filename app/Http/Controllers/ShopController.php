@@ -288,7 +288,15 @@ class ShopController extends Controller
         ];
         // Mail::to($request->user()->email)->send(new OrderCreated($orderData));
         Mail::to('w71080635@gmail.com')->send(new OrderCreated($orderData));
-        return redirect(route('shopThxGet'));
+        if ($request->money_way === 1) {
+            return redirect(route('shopThxGet'));
+        } else if ($request->money_way === 2) {
+            return redirect(route('ecPaymentIndex'));
+        }
+    }
+    // >>>綠界金流
+    public function ecPaymentIndex() {
+
     }
     public function thxIndex(Request $request)
     {

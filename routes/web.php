@@ -77,7 +77,7 @@ Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
         Route::get('/edit/{id}', [ReplyController::class, 'edit'])->name('replyEdit');
         Route::put('/update/{id}', [ReplyController::class, 'update'])->name('replyUpdate');
     });
-    // 前台＿o將產品加入購物車/o購物車頁更新產品數量/o 購物車頁刪除產品/o 會員查看訂單
+    // 前台＿o將產品加入購物車/o購物車頁更新產品數量/o 購物車頁刪除產品/o 會員查看訂單/o 會員查看詳細訂單產品資訊
     Route::prefix('/order')->group(function () {
         // o將產品加入購物車
         Route::post('/add/cart', [OrderController::class, 'add_cart'])->name('order.add.cart');
@@ -97,14 +97,17 @@ Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
     });
     // 前台＿o客戶訂單區塊(同學)
     Route::prefix('/shop')->group(function () {
+        // 查看購物車
         Route::get('/orderDetails', [ShopController::class, 'orderDetailsIndex'])->name('shopOrderDetailsGet');
-
+        // 運輸資訊填寫
         Route::get('/deliver', [ShopController::class, 'deliverIndex'])->name('shopDeliverGet');
         Route::post('/deliver/store', [ShopController::class, 'deliverStore'])->name('shopDeliverPost');
-
+        // 付款方式選擇
         Route::get('/money', [ShopController::class, 'moneyIndex'])->name('shopMoneyGet');
         Route::post('/money/store', [ShopController::class, 'moneyStore'])->name('shopMoneyStore');
-
+        // >>>綠界金流
+        Route::get('/ECPayment', [ShopController::class, 'ecPaymentIndex'])->name('ecPaymentIndex');
+        // 感謝頁
         Route::get('/thx', [ShopController::class, 'thxIndex'])->name('shopThxGet');
         Route::post('/thx', [ShopController::class, 'thx'])->name('shopThxPost');
     });

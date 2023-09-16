@@ -158,7 +158,6 @@
                         </tr>
                     </tbody>
                 </table>
-
             </div>
             <h3>我的訂購產品資訊</h3>
             <div class="row row-cols-md-2 row-cols-xl-4 justify-content-between">
