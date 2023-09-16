@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCreated;
 
@@ -151,11 +152,9 @@ class ShopController extends Controller
         $randomChars = Str::random(2);
         // 年月日
         $yearMonthDay = Carbon::now()->format('Ymd');
-        // 今日第幾筆訂單（假設你已經有了一個計數器）
-        $orderNumber = 1;
-        $orderCount = $orderNumber += 1;  // 這個數字應該根據實際情況更動
+        $todayOrderCount = Order::whereDate('created_at', today())->get()->count();
         // 將訂單計數器格式化為四位數，例如：0001
-        $orderCountStr = str_pad($orderCount, 4, '0', STR_PAD_LEFT);
+        $orderCountStr = str_pad($todayOrderCount, 4, '0', STR_PAD_LEFT);
         // 隨機的三個數字
         $randomNumbers = Str::random(3);
         // 最終的訂單編號
@@ -288,15 +287,19 @@ class ShopController extends Controller
         ];
         // Mail::to($request->user()->email)->send(new OrderCreated($orderData));
         Mail::to('w71080635@gmail.com')->send(new OrderCreated($orderData));
-        if ($request->money_way === 1) {
+        if ($request->money_way == 1) {
             return redirect(route('shopThxGet'));
-        } else if ($request->money_way === 2) {
+        } else if ($request->money_way == 2) {
             return redirect(route('ecPaymentIndex'));
         }
     }
     // >>>綠界金流
     public function ecPaymentIndex() {
-        return view('front_end.shopprocess.ecPaymentIndex');
+        // 不把api要的資訊寫在input的value，改寫在controller
+        $data = (object) [
+            'MerchantID' => '3002607',
+        ];
+        return view('front_end.shopprocess.ecPaymentIndex', compact('data'));
     }
     public function thxIndex(Request $request)
     {
