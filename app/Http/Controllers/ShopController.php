@@ -152,6 +152,7 @@ class ShopController extends Controller
         $randomChars = Str::random(2);
         // 年月日
         $yearMonthDay = Carbon::now()->format('Ymd');
+        // 計算今日第幾筆
         $todayOrderCount = Order::whereDate('created_at', today())->get()->count();
         // 將訂單計數器格式化為四位數，例如：0001
         $orderCountStr = str_pad($todayOrderCount, 4, '0', STR_PAD_LEFT);
@@ -290,13 +291,19 @@ class ShopController extends Controller
         if ($request->money_way == 1) {
             return redirect(route('shopThxGet'));
         } else if ($request->money_way == 2) {
-            return redirect(route('ecPaymentIndex'));
+            // 帶著訂單的id
+            return redirect(route('ecPaymentIndex', ['order_id' => $order->id]));
         }
     }
     // >>>綠界金流
-    public function ecPaymentIndex() {
-        // 不把api要的資訊寫在input的value，改寫在controller
+    public function ecPaymentIndex(Request $request, $order_id) {
+        // 拿到訂單id
+        $user = $request->user();
+        // 找到「特定使用者」\以及「屬於他的訂單」
+        $order = Order::where('user_id', $user->id)->find($order_id);
+        // 17:31
         $data = (object) [
+            // 不把api要的資訊寫在input的value，改寫在controller
             'MerchantID' => '3002607',
         ];
         return view('front_end.shopprocess.ecPaymentIndex', compact('data'));
