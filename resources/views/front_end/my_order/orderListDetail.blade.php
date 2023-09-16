@@ -161,24 +161,22 @@
 
             </div>
             <h3>我的訂購產品資訊</h3>
-            @dump($order_products)
             <div class="row row-cols-md-2 row-cols-xl-4 justify-content-between">
                 @foreach ($order_products as $productItem)
                     <div class="card" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="...">
+                        <img src="{{$productItem->product_img}}" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                                card's content.</p>
+                            <h5 class="card-title">產品名稱：{{$productItem->product_name}}</h5>
+                            <p class="card-text">產品描述：{{$productItem->product_desc}}</p>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">An item</li>
-                            <li class="list-group-item">A second item</li>
-                            <li class="list-group-item">A third item</li>
+                            <li class="list-group-item">產品價格：${{$productItem->product_price}}</li>
+                            <li class="list-group-item">預定數量：{{$productItem->desire_qty}}</li>
+                            <li class="list-group-item">產品總價格：${{$productItem->desire_qty * $productItem->product_price}}</li>
                         </ul>
                         <div class="card-body">
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
+                            <a href="#" class="card-link">查看更多</a>
+
                         </div>
                     </div>
                 @endforeach
