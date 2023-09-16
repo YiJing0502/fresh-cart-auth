@@ -51,6 +51,9 @@ class OrderController extends Controller
         $orders = Order::where('user_id', $user->id)->orderBy('id', 'desc')->get();
         return view('front_end.my_order.orderListShow', compact('orders'));
     }
+    public function list_detail () {
+
+    }
     // 購物車下訂單的四頁
     public function list_index()
     {

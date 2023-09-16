@@ -87,6 +87,8 @@ Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
         Route::delete('/add/cart/delete', [ShopController::class, 'add_cart_delete'])->name('order.add.cart.delete');
         // o 會員查看訂單
         Route::get('/list/show', [OrderController::class, 'list_show_Index'])->name('order.list.show.index');
+        // o 會員查看詳細訂單產品資訊
+        Route::get('/list/detail/{orders_id}', [OrderController::class, 'list_detail'])->name('order.list.detail');
         // x購物車下訂單的四頁
         Route::get('/list', [OrderController::class, 'list_index'])->name('order.list');
         Route::get('/tran', [OrderController::class, 'tran_index'])->name('order.tran');

@@ -5,14 +5,14 @@
     <div class="container">
         <h3>我的訂單資訊</h3>
         <div class="accordion" id="accordionPanelsStayOpenExample">
-            @foreach ($orders as $item)
+            @foreach ($orders as $key => $item)
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#panelsStayOpen-collapse{{ $item->id }}" aria-expanded="true"
                             aria-controls="panelsStayOpen-collapse{{ $item->id }}">
                             訂單成立日：{{ $item->created_at->format('Y-m-d') }}
-                            ｜訂單排序：{{ $item->id }}
+                            ｜訂單排序：{{ $key + 1 }}
                         </button>
                     </h2>
                     <div id="panelsStayOpen-collapse{{ $item->id }}" class="accordion-collapse collapse show">
