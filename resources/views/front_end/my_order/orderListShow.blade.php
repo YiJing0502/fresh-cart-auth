@@ -148,13 +148,22 @@
                                         <th scope="row">＠</th>
                                         {{--  --}}
                                         <td>
-                                            <a href="{{route('order.list.detail', ['orders_id'=> $item->id])}}">
-                                                <button type="button" class="btn btn-outline-success btn-sm">訂單產品資訊</button>
+                                            <a href="{{ route('order.list.detail', ['orders_id' => $item->id]) }}">
+                                                <button type="button"
+                                                    class="btn btn-outline-success btn-sm">訂單產品資訊</button>
                                             </a>
                                         </td>
                                         {{--  --}}
                                         <td>
-                                            <button type="button" class="btn btn-outline-success btn-sm">繳費</button>
+                                            @if ($item->payment_status == 1 || $item->payment_status == 2 || $item->payment_status == 3)
+                                            <form action="{{ route('ecPaymentBackToPay') }}" method="post">
+                                                @csrf
+                                                <input name="orderId" type="hidden" value="{{ $item->id }}">
+                                                <button type="submit" class="btn btn-outline-success btn-sm">繳費</button>
+                                            </form>
+                                            @else
+                                            已完成繳費
+                                            @endif
                                         </td>
                                         {{--  --}}
                                         <td></td>
@@ -176,4 +185,18 @@
     </div>
 @endsection
 @section('js')
+{{-- @dd(Session::all()); --}}
+{{-- 將訊息放入 --}}
+    @if (Session::has('message'))
+        {{-- sweet alert js 引入 --}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '錯誤',
+                text: '{{ Session::get("message") }}',
+            })
+        </script>
+    @else
+    @endif
 @endsection

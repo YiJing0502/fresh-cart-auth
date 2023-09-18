@@ -51,7 +51,7 @@ class ShopController extends Controller
         ];
     }
     // 購物車頁更新產品數量
-    public function add_cart_update (Request $request)
+    public function add_cart_update(Request $request)
     {
         $request->validate([
             'product_id' => 'required|min:1|numeric|exists:products,id',
@@ -78,13 +78,13 @@ class ShopController extends Controller
             'product_id' => $request->product_id,
             'total' => $total,
         ];
-
     }
     // 購物車頁刪除產品
-    public function add_cart_delete (Request $request) {
+    public function add_cart_delete(Request $request)
+    {
         // 1.驗證
         $request->validate([
-            'cart_id' =>'required|min:1|numeric|exists:carts,id',
+            'cart_id' => 'required|min:1|numeric|exists:carts,id',
         ]);
         // 2.測試是否可以通過驗證
         // dd($request->cart_id);
@@ -101,7 +101,7 @@ class ShopController extends Controller
         }
         // 回傳物件
         return (object)[
-            'code' => $cart? 1 : 0,
+            'code' => $cart ? 1 : 0,
             // code $cart是否存在，存在為1，不存在為0
             'id' => $request->cart_id,
             'total' => $total,
@@ -126,7 +126,8 @@ class ShopController extends Controller
         // dump($rememberInfo['order_name']);
         return view('front_end.shopprocess.deliver', compact('rememberInfo'));
     }
-    public function deliverStore (Request $request) {
+    public function deliverStore(Request $request)
+    {
         // dd($request->all());
         // 缺驗證
         $request->session()->put('order_name', $request->order_name);
@@ -142,7 +143,8 @@ class ShopController extends Controller
         return view('front_end.shopprocess.money');
     }
     // 第三步，確認送出訂單
-    public function moneyStore (Request $request) {
+    public function moneyStore(Request $request)
+    {
         // 1.驗證
         $request->validate([
             'money_way' => 'required|numeric'
@@ -164,7 +166,7 @@ class ShopController extends Controller
         // 4.建立訂單
         $order = Order::create([
             'user_id' => $request->user()->id,
-            'order_number'=> $orderNumber,
+            'order_number' => $orderNumber,
             'order_date' => session()->get('order_date'),
             'order_name' => session()->get('order_name'),
             'order_address' => session()->get('order_address'),
@@ -296,7 +298,8 @@ class ShopController extends Controller
         }
     }
     // >>>綠界金流
-    public function ecPaymentIndex(Request $request, $order_id) {
+    public function ecPaymentIndex(Request $request, $order_id)
+    {
         // 拿到訂單id
         $user = $request->user();
         // 找到「特定使用者」\以及「屬於他的訂單」
@@ -305,7 +308,7 @@ class ShopController extends Controller
         $string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         $shuffle = str_shuffle($string);
         // 如果找得到訂單
-        if($order) {
+        if ($order) {
             $data = (object) [
                 // 不把api要的資訊寫在input的value，改寫在controller
                 'MerchantID' => '3002607',
@@ -316,13 +319,13 @@ class ShopController extends Controller
                 'TotalAmount' => $order->order_total,
                 'TradeDesc' => 'FreshCart',
                 'ItemName' => 'FreshCartItem',
-                'ReturnURL' => route('ecPaymentReturnBack'),
+                'ReturnURL' => 'https://demo-miki.digipack.io/ECpay/ECPay-callback',
                 'ChoosePayment' => 'ALL',
                 // 重要
                 'CheckMacValue' => '',
                 'EncryptType' => 1,
                 'ClientBackURL' => route('order.list.show.index'),
-                'IgnorePayment' => 'TWQR#Credit',
+                'IgnorePayment' => '',
 
             ];
             // 測試用HashKey
@@ -349,10 +352,58 @@ class ShopController extends Controller
             return redirect('front-index');
         };
     }
+    // >>>綠界金流(再回去付款)
+    public function ecPaymentBackToPay(Request $request)
+    {
+        // 有$request要做驗證
+        $request->validate([
+            'orderId' => 'required|exists:orders,id',
+        ]);
+        // 找尋訂單是否真的存在
+        $user = $request->user();
+        $order = Order::where('user_id', $user->id)->find($request->orderId);
+        // 判斷存在、不存在
+        if ($order) {
+            if ($order->payment_status == 1 || $order->payment_status == 2) {
+                // 設定隱藏input塞order_id
+                return redirect(route('ecPaymentIndex', ['order_id' => $request->orderId]));
+            }
+        }
+        // 失敗，導回查看訂單頁面，帶著session(with傳session)
+        return redirect(route('order.list.show.index'))->with(['message' => '訂單不存在']);
+    }
     // >>>綠界金流(回傳)
-    public function ecPaymentReturnBack (Request $request) {
+    public function ecPaymentReturnBack(Request $request)
+    {
         // 綠界打不回來，因為我們是本地測試伺服器
+        // 如果RtnCode為1，要將消費者付款資訊改為已付款
+        // 我在美琪也查不到我的訂單資訊
         dd($request->all());
+        // ask chat gpt
+        // 获取綠界返回的支付信息
+        $paymentInfo = json_decode($request->getContent(), true);
+
+        // 根据订单编号（MerchantTradeNo）查找对应的订单
+        $orderNumber = $paymentInfo['MerchantTradeNo'];
+        $order = Order::where('order_number', $orderNumber)->first();
+
+        if ($order) {
+            // 检查支付状态
+            if ($paymentInfo['RtnCode'] == '1') {
+                // 更新订单状态为已付款
+                $order->payment_status = 4;
+                $order->save();
+            } else {
+                // 支付失败或其他错误处理逻辑
+                // 可以记录日志或发送通知
+            }
+        } else {
+            // 订单不存在，处理错误逻辑
+            // 可以记录日志或发送通知
+        }
+
+        // 返回响应，綠界可能需要接收到一个成功响应
+        return response('OK', 200);
     }
     public function thxIndex(Request $request)
     {

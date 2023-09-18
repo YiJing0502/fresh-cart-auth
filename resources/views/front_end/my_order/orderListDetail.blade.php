@@ -143,9 +143,17 @@
                                     <button type="button" class="btn btn-outline-success btn-sm">訂單產品資訊</button>
                                 </a>
                             </td>
-                            {{--  --}}
+                            {{-- 前往繳費 --}}
                             <td>
-                                <button type="button" class="btn btn-outline-success btn-sm">繳費</button>
+                                @if ($order->payment_status == 1 || $order->payment_status == 2 || $order->payment_status == 3)
+                                <form action="{{ route('ecPaymentBackToPay') }}" method="post">
+                                    @csrf
+                                    <input name="orderId" type="hidden" value="{{ $order->id }}">
+                                    <button type="submit" class="btn btn-outline-success btn-sm">繳費</button>
+                                </form>
+                                @else
+                                已完成繳費
+                                @endif
                             </td>
                             {{--  --}}
                             <td></td>
@@ -164,17 +172,18 @@
                 @foreach ($order_products as $key => $productItem)
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
-                            <h5 class="text-center">{{$key + 1}}</h5>
+                            <h5 class="text-center">{{ $key + 1 }}</h5>
                         </div>
-                        <img src="{{$productItem->product_img}}" class="card-img-top" alt="...">
+                        <img src="{{ $productItem->product_img }}" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">產品名稱：{{$productItem->product_name}}</h5>
-                            <p class="card-text">產品描述：{{$productItem->product_desc}}</p>
+                            <h5 class="card-title">產品名稱：{{ $productItem->product_name }}</h5>
+                            <p class="card-text">產品描述：{{ $productItem->product_desc }}</p>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">產品價格：${{$productItem->product_price}}</li>
-                            <li class="list-group-item">預定數量：{{$productItem->desire_qty}}</li>
-                            <li class="list-group-item">產品總價格：${{$productItem->desire_qty * $productItem->product_price}}</li>
+                            <li class="list-group-item">產品價格：${{ $productItem->product_price }}</li>
+                            <li class="list-group-item">預定數量：{{ $productItem->desire_qty }}</li>
+                            <li class="list-group-item">產品總價格：${{ $productItem->desire_qty * $productItem->product_price }}
+                            </li>
                         </ul>
                         <div class="card-body">
                             <a href="#" class="card-link">查看更多</a>
@@ -186,4 +195,17 @@
     </div>
 @endsection
 @section('js')
+    {{-- 將訊息放入 --}}
+    @if (Session::has('message'))
+        {{-- sweet alert js 引入 --}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '錯誤',
+                text: '{{ Session::get('message') }}',
+            })
+        </script>
+    @else
+    @endif
 @endsection

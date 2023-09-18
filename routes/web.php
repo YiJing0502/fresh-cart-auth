@@ -107,6 +107,8 @@ Route::middleware(['auth', 'role.weight: 1_2'])->group(function () {
         Route::post('/money/store', [ShopController::class, 'moneyStore'])->name('shopMoneyStore');
         // >>>綠界金流
         Route::get('/ECPayment/{order_id}', [ShopController::class, 'ecPaymentIndex'])->name('ecPaymentIndex');
+        // >>>綠界金流(再回去付款)
+        Route::post('/ECPayment/backToPay', [ShopController::class, 'ecPaymentBackToPay'])->name('ecPaymentBackToPay');
         // >>>綠界金流(回傳)
         Route::get('/ECPayment/returnBack', [ShopController::class, 'ecPaymentReturnBack'])->name('ecPaymentReturnBack');
         // 感謝頁
