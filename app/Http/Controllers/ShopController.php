@@ -379,7 +379,7 @@ class ShopController extends Controller
         // 如果RtnCode為1，要將消費者付款資訊改為已付款
         // 我在美琪也查不到我的訂單資訊
         dd($request->all());
-        // ask chat gpt
+        // ask chat gpt ，尚未測試 9/18
         // 获取綠界返回的支付信息
         $paymentInfo = json_decode($request->getContent(), true);
 
