@@ -301,12 +301,58 @@ class ShopController extends Controller
         $user = $request->user();
         // 找到「特定使用者」\以及「屬於他的訂單」
         $order = Order::where('user_id', $user->id)->find($order_id);
-        // 17:31
-        $data = (object) [
-            // 不把api要的資訊寫在input的value，改寫在controller
-            'MerchantID' => '3002607',
-        ];
-        return view('front_end.shopprocess.ecPaymentIndex', compact('data'));
+        // 產生三個隨機字母
+        $string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        $shuffle = str_shuffle($string);
+        // 如果找得到訂單
+        if($order) {
+            $data = (object) [
+                // 不把api要的資訊寫在input的value，改寫在controller
+                'MerchantID' => '3002607',
+                // 消費者每次繳費使用不同的唯一碼
+                'MerchantTradeNo' => $order->order_number . substr($shuffle, 0, 3),
+                'MerchantTradeDate' => date('Y/m/d H:i:s'),
+                'PaymentType' => 'aio',
+                'TotalAmount' => $order->order_total,
+                'TradeDesc' => 'FreshCart',
+                'ItemName' => 'FreshCartItem',
+                'ReturnURL' => route('ecPaymentReturnBack'),
+                'ChoosePayment' => 'ALL',
+                // 重要
+                'CheckMacValue' => '',
+                'EncryptType' => 1,
+                'ClientBackURL' => route('order.list.show.index'),
+                'IgnorePayment' => 'TWQR#Credit',
+
+            ];
+            // 測試用HashKey
+            $hashKey = 'pwFHCqoQZGmho4w6';
+            // 測試用HashIV
+            $hashIV = 'EkRm7iFT261dpevs';
+            // 檢查碼機制
+            $step1 = "ChoosePayment={$data->ChoosePayment}&ClientBackURL={$data->ClientBackURL}&EncryptType={$data->EncryptType}&IgnorePayment={$data->IgnorePayment}&ItemName={$data->ItemName}&MerchantID={$data->MerchantID}&MerchantTradeDate={$data->MerchantTradeDate}&MerchantTradeNo={$data->MerchantTradeNo}&PaymentType={$data->PaymentType}&ReturnURL={$data->ReturnURL}&TotalAmount={$data->TotalAmount}&TradeDesc={$data->TradeDesc}";
+            // 商家
+            $step2 = "HashKey={$hashKey}&{$step1}&HashIV={$hashIV}";
+            // 加密
+            $step3 = urlencode($step2);
+            // 轉小寫
+            $step4 = strtolower($step3);
+            // 雜湊 加密 sha256
+            $step5 = hash('sha256', $step4);
+            // 轉大寫
+            $step6 = strtoupper($step5);
+            // 以物件方式放入
+            $data->CheckMacValue = $step6;
+            // dd($step6);
+            return view('front_end.shopprocess.ecPaymentIndex', compact('data'));
+        } else {
+            return redirect('front-index');
+        };
+    }
+    // >>>綠界金流(回傳)
+    public function ecPaymentReturnBack (Request $request) {
+        // 綠界打不回來，因為我們是本地測試伺服器
+        dd($request->all());
     }
     public function thxIndex(Request $request)
     {
